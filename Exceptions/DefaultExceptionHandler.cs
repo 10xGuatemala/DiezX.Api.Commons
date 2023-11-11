@@ -22,13 +22,13 @@ using DiezX.Api.Commons.Utils;
 namespace DiezX.Api.Commons.Exceptions
 {
     /// <summary>
-    /// Middleware for handling exceptions and generating problem details responses.
+    /// Middleware para manejar excepciones y generar respuestas con detalles del problema.
     /// </summary>
-    public class ExceptionHandler
+    public class DefaultExceptionHandler
     {
         private readonly RequestDelegate _next;
         private readonly DateUtil _dateUtil;
-        private ILogger<ExceptionHandler> _logger { get; }
+        private ILogger<DefaultExceptionHandler> _logger { get; }
         private readonly JsonSerializerOptions _jsonOptions;
 
 
@@ -39,9 +39,9 @@ namespace DiezX.Api.Commons.Exceptions
         /// <param name="dateUtil">La utilidad de fecha.</param>
         /// <param name="logger">El registrador.</param>
         /// <param name="jsonOptions">Las opciones de JSON.</param>
-        public ExceptionHandler(RequestDelegate next
+        public DefaultExceptionHandler(RequestDelegate next
              , DateUtil dateUtil
-             , ILogger<ExceptionHandler> logger
+             , ILogger<DefaultExceptionHandler> logger
              , IOptions<JsonOptions> jsonOptions)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
@@ -119,7 +119,8 @@ namespace DiezX.Api.Commons.Exceptions
         private void LogException(Exception ex)
         {
             Trace.WriteLine(ex);
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, "Ocurrió un error: {ErrorMessage}", ex.Message);
+
         }
     }
 

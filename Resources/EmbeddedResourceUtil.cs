@@ -39,10 +39,10 @@ namespace DiezX.Api.Commons.Resources
         /// <exception cref="ArgumentException">Se lanza si el recurso no se encuentra.</exception>
         public static string GetResource(string partialName)
         {
-            // Verificar si el recurso ya está en la memoria.
-            if (ResourceCache.ContainsKey(partialName))
+            // Intentar obtener el recurso del cache.
+            if (ResourceCache.TryGetValue(partialName, out string cachedContent))
             {
-                return ResourceCache[partialName];
+                return cachedContent;
             }
 
             var assembly = Assembly.GetExecutingAssembly();
@@ -57,6 +57,7 @@ namespace DiezX.Api.Commons.Resources
 
             throw new ArgumentException($"El recurso '{partialName}' no se encuentra en el ensamblado.", nameof(partialName));
         }
+
 
         /// <summary>
         /// Obtiene el contenido de un recurso incrustado específico.

@@ -76,7 +76,7 @@ namespace DiezX.Api.Commons.Notifications.Services
         {
             try
             {
-                _logger.LogInformation($"Configurando correo para envío a {_notificationConfig.UserName}");
+                _logger.LogInformation("Configurando correo para envío a {UserName}", _notificationConfig.UserName);
                 await _smtpClient.ConnectAsync(_notificationConfig.SmtpServer, _notificationConfig.Port, SecureSocketOptions.StartTls);
                 await _smtpClient.AuthenticateAsync(_notificationConfig.UserName, _notificationConfig.Password);
                 await _smtpClient.SendAsync(message);

@@ -56,7 +56,7 @@ namespace DiezX.Api.Commons.Repositories.Services
             if (!currentUser.Equals(anomUser) && CollectionUtil.IsEmpty(roles))
                 throw new ApiException(StatusCodes.Status404NotFound, $"No se encontraron roles para el usuario {currentUser}");
 
-            _logger.LogInformation($"El usuario que realiza la petición es: {currentUser}");
+            _logger.LogInformation("El usuario que realiza la petición es: {CurrentUser}", currentUser);
 
             return new UsuarioRequestDto(currentUser, roles);
         }

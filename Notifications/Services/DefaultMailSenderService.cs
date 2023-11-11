@@ -166,7 +166,8 @@ namespace DiezX.Api.Commons.Notifications.Services
             };
 
             await _sendMailService.SendEmailAsync(mail);
-            _logger.LogInformation($"Correo enviado a {email} con asunto: {subject}");
+            _logger.LogInformation("Correo enviado a {Email} con asunto: {Subject}", email, subject);
+
         }
     }
 
