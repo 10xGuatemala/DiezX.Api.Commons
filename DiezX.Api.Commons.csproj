@@ -13,13 +13,12 @@
 		<Title>DiezX Api Commons</Title>
 		<Description>Este módulo central está equipado con clases esenciales diseñadas para la creación de APIs RESTful utilizando el marco de desarrollo de DiezX. Proporciona herramientas y servicios comunes que se pueden utilizar a lo largo del proyecto.</Description>
 		<Copyright>Soluciones Modernas 10x, under the Apache License, Version 2.0</Copyright>
-		<PackageIcon>images/logo_diezx.png</PackageIcon>
-		<PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/SolucionesModernas10X/DiezX.Api.Commons</PackageProjectUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>Commons API AspnetCore Rest</PackageTags>
 		<PackageId>DiezX.Api.Commons</PackageId>
-		<ReleaseVersion>1.0.0</ReleaseVersion>
 		<NeutralLanguage>es-GT</NeutralLanguage>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -48,6 +47,9 @@
 		<None Remove="Strings\" />
 		<None Remove="Notifications\Templates\EmailConfirmationTemplate.html" />
 		<None Remove="images\" />
+     	<None Include="images/logo_diezx.png" Pack="true" PackagePath=""/>
+     	<None Include="LICENSE" Pack="true" PackagePath=""/>
+     	<None Include="README.md" Pack="true" PackagePath=""/>
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Exceptions\" />
@@ -65,5 +67,6 @@
 		<EmbeddedResource Include="Notifications\Templates\FirstPasswordTemplate.html" />
 		<EmbeddedResource Include="Notifications\Templates\PasswordUpdatedTemplate.html" />
 		<EmbeddedResource Include="Notifications\Templates\EmailConfirmationTemplate.html" />
+		<EmbeddedResource Include="images\logo_diezx.png" />
 	</ItemGroup>
 </Project>
