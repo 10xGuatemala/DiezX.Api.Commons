@@ -12,12 +12,15 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 
-namespace DiezX.Api.Commons.Exceptions {
-	public class CustomProblemDetails : ProblemDetails {
-		public DateTime ErrorDate { get; set; }
-
-	}
+namespace DiezX.Api.Commons.Security.Dto
+{
+    public class DecodedTokenDto
+    {
+        public ClaimsPrincipal ClaimPrincipal { get; set; }
+        public SecurityToken SecurityToken { get; set; }
+    }
 }
 

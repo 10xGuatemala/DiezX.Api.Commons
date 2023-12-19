@@ -22,7 +22,7 @@ namespace DiezX.Api.Commons.Exceptions
     /// Excepción que incluye un código de estado (StatusCode) para operaciones en API REST.
     /// </summary>
     [Serializable]
-    public class ApiException : Exception
+    public class ApiGeneralException : Exception
     {
         /// <summary>
         /// Código de estado HTTP.
@@ -34,7 +34,7 @@ namespace DiezX.Api.Commons.Exceptions
         /// </summary>
         /// <param name="statusCode">Código de estado HTTP.</param>
         /// <param name="message">Mensaje de la excepción.</param>
-        public ApiException(int statusCode, string message) : base(message)
+        public ApiGeneralException(int statusCode, string message) : base(message)
         {
             StatusCode = statusCode;
         }
@@ -42,7 +42,7 @@ namespace DiezX.Api.Commons.Exceptions
         /// <summary>
         /// Constructor para serialización.
         /// </summary>
-        protected ApiException(SerializationInfo info, StreamingContext context)
+        protected ApiGeneralException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
 
@@ -52,7 +52,7 @@ namespace DiezX.Api.Commons.Exceptions
         /// <summary>
         /// Constructor predeterminado protegido.
         /// </summary>
-        protected ApiException()
+        protected ApiGeneralException()
         { }
 
         // Serializa el StatusCode

@@ -13,10 +13,18 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
 - **Date**
   - `DateUtil.cs`: Utilidades para operaciones comunes relacionadas con fechas.
 
-- **Exceptions**
-  - `ApiException.cs`: Clase personalizada para manejar excepciones de la API.
-  - `CustomProblemDetails.cs`: Detalles personalizados para problemas de la API.
-  - `ExceptionHandler.cs`: Manejador global de excepciones para la API.
+- **ExceptionsHandlers**
+    - **Dtos**
+        - `ExtendedProblemDetail.cs`: Clase para proporcionar detalles adicionales en las respuestas de errores de la API, extendiendo la estructura de respuesta estándar.
+
+    - **Exceptions**
+        - `ApiGeneralException.cs`: Excepción personalizada para errores generales de la API.
+        - `ApiValidationParamsException.cs`: Excepción para manejar errores específicos de validación de parámetros de la API.
+        - `TokenExpiredException.cs`: Excepción personalizada que se lanza cuando un token de autenticación ha expirado.
+
+    - **Filters**
+        - `ValidateModelAttribute.cs`: Filtro de acción para validar el modelo de entrada en las solicitudes a la API antes de llegar al controlador.
+        - `DefaultExceptionHandler.cs`: Manejador por defecto para capturar y procesar excepciones no controladas a nivel de la aplicación.
 
 - **Notifications**
   - **Configurations**: Configuraciones relacionadas con notificaciones.
@@ -28,6 +36,8 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
     - `EmailConfirmationTemplate.html`: Plantilla para correos de confirmación.
     - `FirstPasswordTemplate.html`: Plantilla para correos de primera contraseña.
     - `PasswordUpdatedTemplate.html`: Plantilla para correos de actualización de contraseña.
+- **Remote**
+    - `RemoteUtils.cs`: Clase de utilidades para manejar aspectos de las solicitudes remotas. Implementa un metodo para obtener la IP del usuario.
 
 - **Utils**
   - `TemplateUtil.cs`: Utilidades para trabajar con plantillas de correo electrónico.
@@ -51,8 +61,11 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
   - `StringUtil.cs`: Utilidades para operaciones comunes con cadenas de texto.
 
 - **Validators**
-  - `FileSizeAttribute.cs`: Validador de atributo para el tamaño de un archivo.
-  - `PasswordValidationAttribute.cs`: Validador de atributo para contraseñas.
+  - `AdvancedEmailAttribute.cs`: Validador de atributo para la estructura y formato de direcciones de correo electrónico avanzadas (requiere que el correo tengo un dominio de primer nivel)
+  - `DateRangeValidation.cs`: Validador de atributo para asegurar que una fecha se encuentre dentro de un rango específico.
+  - `FileExtensionAttribute.cs`: Validador de atributo para verificar que un archivo tenga una de las extensiones de archivo permitidas.
+  - `FileSizeAttribute.cs`: Validador de atributo para el tamaño de un archivo, asegurando que no exceda un tamaño máximo especificado.
+  - `PasswordValidationAttribute.cs`: Validador de atributo para contraseñas, imponiendo reglas para una complejidad mínima requerida.
 
 ## Uso
 

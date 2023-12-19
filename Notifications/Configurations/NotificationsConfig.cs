@@ -60,9 +60,19 @@ namespace DiezX.Api.Commons.Notifications.Configurations
         public required string RecoveryPageUrl { get; set; }
 
         /// <summary>
+        /// Obtiene la URL de la página para confirmar correo.
+        /// </summary>
+        public required string ConfirmationPageUrl { get; set; }
+
+        /// <summary>
         /// Obtiene o establece la duración de vida del token utilizado para la recuperación de contraseña.
         /// </summary>
         public long RecoveryTokenExpiration { get; set; }
+
+        /// <summary>
+        /// Bandera para indicar si se utiliza tls para envio de correo seguro.
+        /// </summary>
+        public bool UseTls { get; set; } = true;
     }
 
 

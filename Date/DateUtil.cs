@@ -16,22 +16,35 @@ using NodaTime;
 
 namespace DiezX.Api.Commons.Utils
 {
-
     /// <summary>
-    /// Utility to get date based on time zone
-    /// This class exists derived from the time representation problems that .net has
-    /// For more information:
-    /// https://blog.nodatime.org/2011/08/what-wrong-with-datetime-anyway.html
+    /// Utilidad para obtener la fecha y hora basada en una zona horaria específica.
+    /// Esta clase se deriva de los problemas de representación de tiempo que tiene .NET.
+    /// Para más información: https://blog.nodatime.org/2011/08/what-wrong-with-datetime-anyway.html
     /// </summary>
     public class DateUtil
     {
         private readonly DateTimeZone _timeZone;
 
         /// <summary>
-        /// Gets the current date and time, considering the timezone with which the class was instantiated
-        /// with an "unspecified" kind 
+        /// Inicializa una nueva instancia de la clase <see cref="DateUtil"/> con una zona horaria específica.
+        /// Esta clase debe ser instanciada explícitamente con una zona horaria por defecto.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="timeZone">La zona horaria a utilizar.</param>
+        public DateUtil(string timeZone)
+        {
+            if (string.IsNullOrEmpty(timeZone))
+            {
+                throw new ArgumentException("El parámetro 'timeZone' no puede ser nulo o vacío.", nameof(timeZone));
+            }
+
+            _timeZone = DateTimeZoneProviders.Tzdb[timeZone];
+        }
+
+        /// <summary>
+        /// Obtiene la fecha y hora actual considerando la zona horaria con la que la clase fue instanciada.
+        /// El tipo de fecha y hora devuelto es "unspecified" (no especificado).
+        /// </summary>
+        /// <returns>La fecha y hora actual en la zona horaria configurada.</returns>
         public DateTime GetTime()
         {
             return Instant.FromDateTimeUtc(DateTime.UtcNow)
@@ -40,20 +53,19 @@ namespace DiezX.Api.Commons.Utils
         }
 
         /// <summary>
-        /// Constructor for specific timeZone for getTime()
-        /// This class must be instantiated by explicitly timezone by default
+        /// Obtiene un <see cref="DateTimeOffset"/> que representa la fecha y hora actual en la zona horaria configurada.
         /// </summary>
-        /// <param name="timeZone"></param>
-        public DateUtil(string timeZone)
+        /// <returns>Un <see cref="DateTimeOffset"/> con la fecha y hora actual y el desplazamiento de la zona horaria.</returns>
+        public DateTimeOffset GetTimeOffset()
         {
-            _timeZone = DateTimeZoneProviders.Tzdb[timeZone];
+            return Instant.FromDateTimeOffset(DateTimeOffset.Now)
+                .InZone(_timeZone)
+                .ToDateTimeOffset();
         }
 
-        //set to private to prevent it from being instantiated without the timezone
+        // Constructor privado para prevenir la instanciación sin especificar la zona horaria.
         private DateUtil()
         {
-
         }
-
     }
 }

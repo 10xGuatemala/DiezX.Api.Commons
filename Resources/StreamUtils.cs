@@ -12,6 +12,8 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+using HeyRed.Mime;
+
 namespace DiezX.Api.Commons.Utils
 {
     /// <summary>
@@ -68,6 +70,16 @@ namespace DiezX.Api.Commons.Utils
                 Headers = new HeaderDictionary(),
                 ContentType = contentType
             };
+        }
+
+        /// <summary>
+        /// Obtiene la extensión del archivo basada en su ContentType.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public static string GetExtension(string contentType)
+        {
+            return MimeTypesMap.GetExtension(contentType);
         }
     }
 

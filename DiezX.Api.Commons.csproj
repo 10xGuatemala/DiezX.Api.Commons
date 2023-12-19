@@ -13,28 +13,27 @@
 		<Title>DiezX Api Commons</Title>
 		<Description>Este módulo central está equipado con clases esenciales diseñadas para la creación de APIs RESTful utilizando el marco de desarrollo de DiezX. Proporciona herramientas y servicios comunes que se pueden utilizar a lo largo del proyecto.</Description>
 		<Copyright>Soluciones Modernas 10x, under the Apache License, Version 2.0</Copyright>
+		<PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/SolucionesModernas10X/DiezX.Api.Commons</PackageProjectUrl>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>Commons API AspnetCore Rest</PackageTags>
 		<PackageId>DiezX.Api.Commons</PackageId>
+		<PackageIcon>logo_diezx.png</PackageIcon>
 		<NeutralLanguage>es-GT</NeutralLanguage>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
 	<PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
 	<ItemGroup>
 		<PackageReference Include="NodaTime" Version="3.1.9" />
-		<PackageReference Include="MailKit" Version="4.2.0" />
+		<PackageReference Include="MailKit" Version="4.3.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
 		<PackageReference Include="MimeTypesMap" Version="1.0.8" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.12.0.78982">
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.15.0.81779">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="Exceptions\" />
 		<None Remove="Notifications\" />
 		<None Remove="Security\" />
 		<None Remove="Validators\" />
@@ -46,13 +45,16 @@
 		<None Remove="Resources\" />
 		<None Remove="Strings\" />
 		<None Remove="Notifications\Templates\EmailConfirmationTemplate.html" />
-		<None Remove="images\" />
-     	<None Include="images/logo_diezx.png" Pack="true" PackagePath=""/>
-     	<None Include="LICENSE" Pack="true" PackagePath=""/>
-     	<None Include="README.md" Pack="true" PackagePath=""/>
+		<None Remove="ExceptionHandlers\" />
+		<None Remove="ExceptionHandlers\Exceptions\" />
+		<None Remove="Remote\" />
+		<None Remove="Cache\" />
+		<None Remove="Notifications\Templates\PasswordRecoveryTemplate.html" />
+		<None Include="Images\logo_diezx.png" Pack="true" PackagePath="" />
+		<None Include="LICENSE" Pack="true" PackagePath="" />
+		<None Include="README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="Exceptions\" />
 		<Folder Include="Notifications\" />
 		<Folder Include="Security\" />
 		<Folder Include="Validators\" />
@@ -61,12 +63,16 @@
 		<Folder Include="Date\" />
 		<Folder Include="Resources\" />
 		<Folder Include="Strings\" />
-		<Folder Include="images\" />
+		<Folder Include="ExceptionHandlers\" />
+		<Folder Include="ExceptionHandlers\Exceptions\" />
+		<Folder Include="Remote\" />
+		<Folder Include="Cache\" />
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Include="Notifications\Templates\FirstPasswordTemplate.html" />
 		<EmbeddedResource Include="Notifications\Templates\PasswordUpdatedTemplate.html" />
-		<EmbeddedResource Include="Notifications\Templates\EmailConfirmationTemplate.html" />
-		<EmbeddedResource Include="images\logo_diezx.png" />
+		<EmbeddedResource Include="Notifications\Templates\ConfirmationEmailTemplate.html" />
+		<EmbeddedResource Include="Notifications\Templates\PasswordRecoveryTemplate.html" />
+		<EmbeddedResource Include="Images\logo_diezx.png" />
 	</ItemGroup>
 </Project>

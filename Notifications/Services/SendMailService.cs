@@ -76,8 +76,13 @@ namespace DiezX.Api.Commons.Notifications.Services
         {
             try
             {
+                // Usar TLS si está habilitado en la configuración
+                var secureSocketOptions = _notificationConfig.UseTls
+                                          ? SecureSocketOptions.StartTls
+                                          : SecureSocketOptions.None;
+
                 _logger.LogInformation("Configurando correo para envío a {UserName}", _notificationConfig.UserName);
-                await _smtpClient.ConnectAsync(_notificationConfig.SmtpServer, _notificationConfig.Port, SecureSocketOptions.StartTls);
+                await _smtpClient.ConnectAsync(_notificationConfig.SmtpServer, _notificationConfig.Port, secureSocketOptions);
                 await _smtpClient.AuthenticateAsync(_notificationConfig.UserName, _notificationConfig.Password);
                 await _smtpClient.SendAsync(message);
                 await _smtpClient.DisconnectAsync(true);
