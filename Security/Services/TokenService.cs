@@ -146,14 +146,14 @@ namespace DiezX.Api.Commons.Security.Jwt
             // Verificar si el token ha expirado.
             if (now > securityToken.ValidTo)
             {
-                _logger.LogWarning("Intento de uso de token expirado. Fecha actual {now}, fecha de expiración del token {validTo}", now, securityToken.ValidTo);
+                _logger.LogWarning("Intento de uso de token expirado. Fecha actual {Now}, fecha de expiración del token {ValidTo}", now, securityToken.ValidTo);
                 throw new TokenExpiredException("Lo sentimos, el token que está utilizando ya no es válido");
             }
 
             // Verificar si el token contiene claims.
             if (claimsPrincipal == null || CollectionUtil.IsEmpty(claimsPrincipal.Claims))
             {
-                _logger.LogWarning("Intento de uso de token sin información {claimsPrincipal}", claimsPrincipal);
+                _logger.LogWarning("Intento de uso de token sin información {ClaimsPrincipal}", claimsPrincipal);
                 throw new ApiGeneralException(StatusCodes.Status422UnprocessableEntity, "El token no contiene información válida");
             }
 
