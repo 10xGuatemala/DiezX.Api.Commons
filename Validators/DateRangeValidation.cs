@@ -16,6 +16,7 @@ namespace DiezX.Api.Commons.Validators
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using Org.BouncyCastle.Pqc.Crypto.Lms;
 
     /// <summary>
     /// Atributo de validación para asegurar que la diferencia entre dos fechas no exceda un número especificado de meses.
@@ -58,23 +59,34 @@ namespace DiezX.Api.Commons.Validators
             var startDateProperty = validationContext.ObjectType.GetProperty(_startDatePropertyName);
             var endDateProperty = validationContext.ObjectType.GetProperty(_endDatePropertyName);
 
+            //Esta verificación se realiza para asegurarse de que las propiedades especificadas en los nombres (_startDatePropertyName y _endDatePropertyName) existen en el objeto que se está validando
             if (startDateProperty == null || endDateProperty == null)
             {
-                throw new ArgumentException("No se encontraron las propiedades necesarias");
+                throw new ArgumentException("No se encontraron las propiedades necesarias para validar rango de fechas.");
             }
 
             var startDate = startDateProperty.GetValue(value, null) as DateTime?;
             var endDate = endDateProperty.GetValue(value, null) as DateTime?;
 
-            if (startDate.HasValue && endDate.HasValue)
+            // Si ninguno de los valores está presente, sigue adelante sin hacer más validaciones.
+            if (!startDate.HasValue && !endDate.HasValue)
             {
-                int monthDifference = ((endDate.Value.Year - startDate.Value.Year) * 12) + endDate.Value.Month - startDate.Value.Month;
-                if (monthDifference > _maxMonthDifference)
-                {
-                    return new ValidationResult(string.IsNullOrWhiteSpace(ErrorMessage) ?
-                  GetErrorMessage()
-                : FormatErrorMessage(validationContext.DisplayName));
-                }
+                return ValidationResult.Success;
+            }
+
+
+            // Verificar que la fecha de inicio es anterior o igual a la fecha de fin
+            if (startDate > endDate)
+            {
+                return new ValidationResult("La fecha de inicio debe ser anterior o igual a la fecha de fin.");
+            }
+
+            int monthDifference = ((endDate.Value.Year - startDate.Value.Year) * 12) + endDate.Value.Month - startDate.Value.Month;
+            if (monthDifference > _maxMonthDifference)
+            {
+                return new ValidationResult(string.IsNullOrWhiteSpace(ErrorMessage) ?
+              GetErrorMessage()
+            : FormatErrorMessage(validationContext.DisplayName));
             }
 
             return ValidationResult.Success;
