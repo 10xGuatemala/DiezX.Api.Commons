@@ -6,15 +6,15 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<PackageVersion>1.1.1</PackageVersion>
+		<PackageVersion>1.2.1</PackageVersion>
 		<Authors>Miguel E. Guerra Connor</Authors>
-		<Company>Soluciones Modernas 10X</Company>
+		<Company>10X de Guatemala, S.A</Company>
 		<Owners>10X de Guatemala, S.A</Owners>
 		<Title>DiezX Api Commons</Title>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Description>Este módulo central está equipado con clases esenciales diseñadas para la creación de APIs RESTful utilizando el marco de desarrollo de DiezX. Proporciona herramientas y servicios comunes que se pueden utilizar a lo largo del proyecto.</Description>
-		<Copyright>Soluciones Modernas 10x, under the Apache License, Version 2.0</Copyright>
+		<Copyright>10X de Guatemala, under the Apache License, Version 2.0</Copyright>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/SolucionesModernas10X/DiezX.Api.Commons</PackageProjectUrl>
 		<PackageTags>Commons API AspnetCore Rest</PackageTags>
