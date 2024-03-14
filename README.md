@@ -1,6 +1,16 @@
 # DiezX.Api.Commons
 Este módulo central está equipado con clases esenciales diseñadas para apoyar el desarrollo de APIs RESTful utilizando el marco de desarrollo de DiezX. Proporciona herramientas y servicios comunes que se pueden utilizar a lo largo del proyecto.
 
+# Dependencias del Proyecto
+
+Este proyecto requiere las siguientes dependencias:
+
+- NodaTime, versión `3.1.11`
+- MailKit, versión `4.4.0`
+- System.IdentityModel.Tokens.Jwt, versión `7.4.0`
+- MimeTypesMap, versión `1.0.8`
+- SonarAnalyzer.CSharp, versión `9.21.0.86780`
+
 ## Estructura del Proyecto
 El proyecto está organizado en varias carpetas y archivos que se detallan a continuación:
 
@@ -35,7 +45,9 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
   - **Templates**
     - `EmailConfirmationTemplate.html`: Plantilla para correos de confirmación.
     - `FirstPasswordTemplate.html`: Plantilla para correos de primera contraseña.
+    - `PasswordRecoveryTemplate.html`: Plantilla para correos recuperación de contraseña.
     - `PasswordUpdatedTemplate.html`: Plantilla para correos de actualización de contraseña.
+    - `RejectionTemplate.html`: Plantilla para correos donde se rechaza solicitud.
 - **Remote**
     - `RemoteUtils.cs`: Clase de utilidades para manejar aspectos de las solicitudes remotas. Implementa un metodo para obtener la IP del usuario.
 
