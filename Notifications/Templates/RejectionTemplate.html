@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correo de Denegación de gestión</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif;">
+    <!-- Main Email Table Container -->
+    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4;">
+        <tr>
+            <td align="center" style="padding: 40px 0;">
+                <!-- Email Content Table -->
+                <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="600" style="background-color: #ffffff; border: 1px solid #cccccc;">
+                    <tr>
+                        <td style="padding: 40px 30px; text-align: left;">
+                            <!-- Header -->
+                            <h1 style="font-weight: bold; margin: 0;">{SenderCompany}</h1>
+                            <!-- Body -->
+                            <p style="margin: 20px 0;">Se ha denegado la gestión <span style="font-weight: bold;">{ProcessId}</span> para la adhesión al Sistema de {SenderSystem}. Por el motivo: {RejectionDesc} </p>
+                            <p>Por favor, revisa los requisitos y vuelve a realizar la solicitud de adhesión con las correciones.
+                            <p style="font-style: italic;">Este es un correo automático, por favor no respondas a este mensaje.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

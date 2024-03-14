@@ -1,4 +1,19 @@
-﻿using System.Security.Claims;
+﻿//
+//  Copyright © 2024 10X de Guatemala, S.A.
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+
+using System.Security.Claims;
 using DiezX.Api.Commons.Security.Jwt;
 using DiezX.Api.Commons.Notifications.Configurations;
 using DiezX.Api.Commons.Notifications.Dto;
@@ -87,8 +102,8 @@ namespace DiezX.Api.Commons.Notifications.Services
         /// <param name="name">Nombre del usuario.</param>
         /// <param name="username">Nombre de usuario para el inicio de sesión.</param>
         /// <param name="email">Dirección de correo electrónico del usuario.</param>
-        /// <param name="processId">Identificador del proceso de unión.</param>
-        /// <param name="codigoSolicitud">Código de solicitud.</param>
+        /// <param name="processId">Identificador del proceso de la gestión</param>
+        /// <param name="codigoSolicitud">GUID de solicitud.</param>
         public async Task SendConfirmationEmailAsync(string name, string username, string email, string processId, string codigoSolicitud)
         {
             var recoveryToken = GenerateTokenProcess(username, processId);
@@ -107,6 +122,27 @@ namespace DiezX.Api.Commons.Notifications.Services
 
             string subject = $"Confirmación de gestión de adhesión {processId} al {_notificationConfig.SenderSystem}";
             await SendEmailAsync(name, email, "ConfirmationEmailTemplate.html", parameters, subject);
+        }
+
+        /// <summary>
+        /// Envía un correo electrónico informando de la denegación de adhesión 
+        /// </summary>
+        /// <param name="name">Nombre del usuario.</param>
+        /// <param name="email">Dirección de correo electrónico del usuario.</param>
+        /// <param name="processId">Identificador del proceso de unión.</param>
+        /// <param name="rejectionDesc">Descripción o motivo del rechazo</param>
+        public async Task SendRejectionMailAsync(string name, string email, string processId, string rejectionDesc)
+        {
+            var parameters = new Dictionary<string, string>
+            {
+                { "SenderCompany", _notificationConfig.SenderCompany },
+                { "SenderSystem", _notificationConfig.SenderSystem },
+                { "ProcessId", processId },
+                { "RejectionDesc", rejectionDesc }
+            };
+
+            string subject = $"Tu solicitud de Adhesión al Sistema {_notificationConfig.SenderSystem} ha sido denegada.";
+            await SendEmailAsync(name, email, "RejectionTemplate.html", parameters, subject);
         }
 
         /// <summary>
