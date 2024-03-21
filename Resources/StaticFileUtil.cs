@@ -15,95 +15,104 @@
 using System.Diagnostics;
 using HeyRed.Mime;
 
-namespace DiezX.Api.Commons.Utils {
-	/// <summary>
-	/// Utilidad para el manejo de operaciones de archivos en el sistema de archivos.
-	/// Este archivo necesita las propiedades StaticFiles del appsettings.json
-	/// </summary>
-	public static class StaticFileUtil {
+namespace DiezX.Api.Commons.Utils
+{
+    /// <summary>
+    /// Utilidad para el manejo de operaciones de archivos en el sistema de archivos.
+    /// Este archivo necesita las propiedades StaticFiles del appsettings.json
+    /// </summary>
+    public static class StaticFileUtil
+    {
 
-		public static string DirectoryPath { get; private set; } = "";
-		public static string RequestPath { get; private set; } = "";
+        private static readonly TraceSource TraceSource = new("DiezX.Api.Commons");
 
-		/// <summary>
-		/// Inicializa la utilidad del sistema de archivos con el directorio de destino configurado.
-		/// </summary>
-		/// <param name="directoryPath">La ruta del directorio de destino.</param>
-		/// <param name="requestPath">La ruta para servir las imagenes</param>
-		public static void Initialize (string directoryPath,
-			string requestPath)
-		{
-			DirectoryPath = directoryPath ?? throw new ArgumentNullException (nameof (directoryPath));
-			RequestPath = requestPath ?? throw new ArgumentNullException (nameof (requestPath));
-		}
+        public static string DirectoryPath { get; private set; } = "";
+        public static string RequestPath { get; private set; } = "";
 
-		/// <summary>
-		/// Guarda un archivo en el sistema de archivos en la ruta especificada en la configuración.
-		/// </summary>
-		/// <param name="file">El archivo a guardar.</param>
-		/// <returns>Una tarea que representa la operación asincrónica.</returns>
-		public static async Task<string> SaveFileToDirectory (IFormFile file)
-		{
-			if (string.IsNullOrEmpty (DirectoryPath)) {
-				throw new InvalidOperationException ("El directorio de destino no ha sido configurado.");
-			}
+        /// <summary>
+        /// Inicializa la utilidad del sistema de archivos con el directorio de destino configurado.
+        /// </summary>
+        /// <param name="directoryPath">La ruta del directorio de destino.</param>
+        /// <param name="requestPath">La ruta para servir las imagenes</param>
+        public static void Initialize(string directoryPath,
+            string requestPath)
+        {
+            DirectoryPath = directoryPath ?? throw new ArgumentNullException(nameof(directoryPath));
+            RequestPath = requestPath ?? throw new ArgumentNullException(nameof(requestPath));
+        }
 
-			string fileName = Guid.NewGuid ().ToString () + Path.GetExtension (file.FileName);
-			string filePath = Path.Combine (DirectoryPath, fileName);
+        /// <summary>
+        /// Guarda un archivo en el sistema de archivos en la ruta especificada en la configuración.
+        /// </summary>
+        /// <param name="file">El archivo a guardar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica.</returns>
+        public static async Task<string> SaveFileToDirectory(IFormFile file)
+        {
+            if (string.IsNullOrEmpty(DirectoryPath))
+            {
+                throw new InvalidOperationException("El directorio de destino no ha sido configurado.");
+            }
 
-			using (FileStream fileStream = new (filePath, FileMode.Create)) {
-				await file.CopyToAsync (fileStream);
-			}
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string filePath = Path.Combine(DirectoryPath, fileName);
 
-			Trace.WriteLine ($"Archivo guardado en el sistema de archivos: {fileName}");
+            using (FileStream fileStream = new(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
 
-			return fileName;
-		}
+            TraceSource.TraceEvent(TraceEventType.Information, 0, $"Archivo guardado en el sistema de archivos: {fileName}");
 
-		/// <summary>
-		/// Lee un archivo del sistema de archivos en la ruta especificada en la configuración y lo devuelve como un arreglo de bytes.
-		/// </summary>
-		/// <param name="fileName">El nombre del archivo a leer.</param>
-		/// <returns>Los bytes del archivo leído.</returns>
-		public static byte [] ReadFileToByte (string fileName)
-		{
-			if (string.IsNullOrEmpty (DirectoryPath)) {
-				throw new InvalidOperationException ("El directorio de destino no ha sido configurado.");
-			}
+            return fileName;
+        }
 
-			string filePath = Path.Combine (DirectoryPath, fileName);
-			byte [] fileBytes = File.ReadAllBytes (filePath);
+        /// <summary>
+        /// Lee un archivo del sistema de archivos en la ruta especificada en la configuración y lo devuelve como un arreglo de bytes.
+        /// </summary>
+        /// <param name="fileName">El nombre del archivo a leer.</param>
+        /// <returns>Los bytes del archivo leído.</returns>
+        public static byte[] ReadFileToByte(string fileName)
+        {
+            if (string.IsNullOrEmpty(DirectoryPath))
+            {
+                throw new InvalidOperationException("El directorio de destino no ha sido configurado.");
+            }
 
-			Trace.WriteLine ($"Archivo leído del sistema de archivos: {fileName}");
+            string filePath = Path.Combine(DirectoryPath, fileName);
+            byte[] fileBytes = File.ReadAllBytes(filePath);
 
-			return fileBytes;
-		}
+            TraceSource.TraceEvent(TraceEventType.Information, 0, $"Archivo leído del sistema de archivos: {fileName}");
+
+            return fileBytes;
+        }
 
 
-		/// <summary>
-		/// Devuelve la ruta relativa hacia el archivo estatico 
-		/// </summary>
-		/// <param name="fileName"></param>
-		/// <returns>la ruta relativa hacia el archivo estatico</returns>
-		public static string GetStaticFilePath (string fileName)
-		{
-			return $"{RequestPath}/{fileName}";
-		}
+        /// <summary>
+        /// Devuelve la ruta relativa hacia el archivo estatico 
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns>la ruta relativa hacia el archivo estatico</returns>
+        public static string GetStaticFilePath(string fileName)
+        {
+            return $"{RequestPath}/{fileName}";
+        }
 
-		/// <summary>
-		/// Devuelve el content-type basado en la extensión del archivo (filename)
-		/// </summary>
-		/// <param name="fileName"></param>
-		/// <returns>Content-Type</returns>
-		public static string GetContentType (string fileName)
-		{
-			string extension = Path.GetExtension (fileName);
-			string contentType = MimeTypesMap.GetMimeType (extension);
-			Trace.WriteLine ($"Content-type: {contentType}");
+        /// <summary>
+        /// Devuelve el content-type basado en la extensión del archivo (filename)
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns>Content-Type</returns>
+        public static string GetContentType(string fileName)
+        {
+            string extension = Path.GetExtension(fileName);
+            string contentType = MimeTypesMap.GetMimeType(extension);
 
-			return contentType;
-		}
-	}
+            TraceSource.TraceEvent(TraceEventType.Information, 0, $"Content-type: {contentType}");
+
+
+            return contentType;
+        }
+    }
 
 }
 
