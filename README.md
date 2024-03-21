@@ -6,10 +6,10 @@ Este módulo central está equipado con clases esenciales diseñadas para apoyar
 Este proyecto requiere las siguientes dependencias:
 
 - NodaTime, versión `3.1.11`
-- MailKit, versión `4.4.0`
+- MailKit, versión `4.4.1`
 - System.IdentityModel.Tokens.Jwt, versión `7.4.0`
 - MimeTypesMap, versión `1.0.8`
-- SonarAnalyzer.CSharp, versión `9.21.0.86780`
+- SonarAnalyzer.CSharp, versión `9.21.0.87781`
 
 ## Estructura del Proyecto
 El proyecto está organizado en varias carpetas y archivos que se detallan a continuación:

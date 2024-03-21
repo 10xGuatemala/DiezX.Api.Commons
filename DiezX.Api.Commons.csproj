@@ -26,13 +26,14 @@
 	<PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<WarningLevel>4</WarningLevel>
+		<NoWarn>$(NoWarn);S3655</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="NodaTime" Version="3.1.11" />
 		<PackageReference Include="MailKit" Version="4.4.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.1" />
 		<PackageReference Include="MimeTypesMap" Version="1.0.8" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.21.0.86780">
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.22.0.87781">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
@@ -57,6 +58,7 @@
 		<None Include="Images\logo_diezx.png" Pack="true" PackagePath="" />
 		<None Include="LICENSE" Pack="true" PackagePath="" />
 		<None Include="README.md" Pack="true" PackagePath="" />
+		<None Remove="Notifications\Templates\RejectionTemplate.html" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Notifications\" />
@@ -78,5 +80,6 @@
 		<EmbeddedResource Include="Notifications\Templates\ConfirmationEmailTemplate.html" />
 		<EmbeddedResource Include="Notifications\Templates\PasswordRecoveryTemplate.html" />
 		<EmbeddedResource Include="Images\logo_diezx.png" />
+		<EmbeddedResource Include="Notifications\Templates\RejectionTemplate.html" />
 	</ItemGroup>
 </Project>
