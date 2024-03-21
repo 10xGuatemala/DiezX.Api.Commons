@@ -256,6 +256,7 @@ namespace DiezX.Api.Commons.Notifications.Services
         private async Task SendEmailAsync(string name, string email, string templateName, Dictionary<string, string> parameters, string subject)
         {
             var body = TemplateUtil.GetHtmlContent(EmbeddedResourceUtil.GetResource(templateName), parameters);
+            _logger.LogInformation("Preparando contenido del email con la plantilla {TemplateName}", templateName);
             var mail = new EmailDto
             {
                 Email = email,

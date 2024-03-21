@@ -12,6 +12,7 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+using DiezX.Api.Commons.Exceptions;
 using DiezX.Api.Commons.Notifications.Configurations;
 using DiezX.Api.Commons.Notifications.Dto;
 using MailKit.Net.Smtp;
@@ -27,6 +28,9 @@ namespace DiezX.Api.Commons.Notifications.Services
         private readonly NotificationsConfig _notificationConfig;
         private readonly ILogger<SendMailService> _logger;
         private readonly SmtpClient _smtpClient;
+
+        //constante
+        const string ERROR_ENVIO = "Se produjo un error al enviar un correo electrónico a los destinatarios especificados.";
 
         // Constructor para inicializar las dependencias
         public SendMailService(
@@ -90,8 +94,8 @@ namespace DiezX.Api.Commons.Notifications.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al enviar correo");
-                throw;
+                _logger.LogError(ex, ERROR_ENVIO + " Destinatarios: {Recipients}", string.Join(", ", message.To));
+                throw new ApiGeneralException(StatusCodes.Status500InternalServerError, ERROR_ENVIO);
             }
         }
 
