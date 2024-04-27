@@ -79,6 +79,10 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
   - `FileSizeAttribute.cs`: Validador de atributo para el tamaño de un archivo, asegurando que no exceda un tamaño máximo especificado.
   - `PasswordValidationAttribute.cs`: Validador de atributo para contraseñas, imponiendo reglas para una complejidad mínima requerida.
 
+- **Extensiones**
+  - `EnumerableExtensions.cs`: Provee métodos de extensión para `IEnumerable<T>` que permiten funcionalidades tales como lanzar excepciones personalizadas si el resultado de una consulta está vacía o una condición no se cumple.
+  - `QueryableExtensions.cs`:  Añade métodos de extensión para `IQueryable<T>` que ayudan con la paginación de resultados aplicando límites de tamaño de página y número de página a las consultas.
+
 ## Uso
 
 Este proyecto está diseñado para ser utilizado como una biblioteca de clases dentro de un proyecto más grande de ASP.NET Core. Se debe hacer referencia a este proyecto desde su solución principal para acceder a las funcionalidades comunes que proporciona.
