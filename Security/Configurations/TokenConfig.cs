@@ -26,6 +26,11 @@ namespace DiezX.Api.Commons.Security
         /// </summary>
         public long DefaultTokenExpiration { get; set; }
 
+        /// <summary>
+        /// Ubicación de la llave privada para firmar los tokens
+        /// </summary>
+        public string RsaKeyPath { get; set; }
+
     }
 
 

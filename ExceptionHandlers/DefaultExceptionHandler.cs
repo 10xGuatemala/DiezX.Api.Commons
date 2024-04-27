@@ -106,7 +106,13 @@ namespace DiezX.Api.Commons.Exceptions
                 problemDetails.Title = "Error en token";
                 problemDetails.Detail = tokenException.Message;
             }
+            else if (ex is DataNotFoundException dataNotFoundException)
+            {
+                problemDetails.Status = StatusCodes.Status404NotFound;
+                problemDetails.Title = "Datos no encontrados";
+                problemDetails.Detail = dataNotFoundException.Message;
 
+            }
 
             // Asigna el nombre del estado HTTP al título si es posible
             problemDetails.Title = Enum.GetName(typeof(HttpStatusCode), problemDetails.Status) ?? problemDetails.Title;

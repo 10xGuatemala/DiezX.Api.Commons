@@ -20,47 +20,54 @@ using DiezX.Api.Commons.Utils;
 namespace DiezX.Api.Commons.Repositories.Services
 {
     /// <summary>
-    /// Servicio para obtener el usuario que esta realizando la peticion http
+    /// Servicio para obtener información sobre el usuario que realiza una solicitud HTTP.
     /// </summary>
     /// <remarks>
-    /// Version: 1.1.0
+    /// Utiliza IHttpContextAccessor para acceder al contexto HTTP actual y extraer información de usuario.
+    /// Este servicio debe utilizarse dentro del ámbito de una solicitud HTTP activa para que el contexto HTTP no sea null.
     /// </remarks>
     public class UsuarioRequestService
     {
-        private readonly HttpContext _httpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<UsuarioRequestService> _logger;
-        private readonly string anomUser = "anonimo";
+        private readonly string _anonymousUser = "anonimo";
 
         /// <summary>
-        /// Constructor para la inyección de dependencias.
+        /// Inicializa una nueva instancia de la clase <see cref="UsuarioRequestService"/>.
         /// </summary>
         /// <param name="httpContextAccessor">Accesor para el contexto HTTP.</param>
-        /// <param name="logger">Instancia del logger.</param>
-        public UsuarioRequestService(IHttpContextAccessor httpContextAccessor,
-            ILogger<UsuarioRequestService> logger)
+        /// <param name="logger">Instancia del logger para registrar información.</param>
+        /// <exception cref="ArgumentNullException">Se lanza si httpContextAccessor es null.</exception>
+        public UsuarioRequestService(IHttpContextAccessor httpContextAccessor, ILogger<UsuarioRequestService> logger)
         {
-            this._httpContext = httpContextAccessor.HttpContext
-                ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-            this._logger = logger;
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
         /// <summary>
-        /// Retorna información sobre el usuario que realizó la solicitud, incluyendo sus roles.
+        /// Obtiene la información del usuario que realiza la solicitud HTTP actual.
         /// </summary>
-        /// <returns>Objeto UsuarioRequest que contiene información del usuario.</returns>
+        /// <returns>
+        /// Un <see cref="UsuarioRequestDto"/> que contiene el nombre del usuario y sus roles.
+        /// </returns>
+        /// <exception cref="ApiGeneralException">
+        /// Se lanza si no hay un contexto HTTP o si no se pueden encontrar roles para el usuario autenticado.
+        /// </exception>
         public UsuarioRequestDto GetRequestUser()
         {
-            var currentUser = _httpContext.User?.Identity?.Name ?? anomUser;
+            var httpContext = _httpContextAccessor.HttpContext ?? throw new ApiGeneralException(StatusCodes.Status401Unauthorized, "No se puede obtener el usuario sin un contexto HTTP.");
+            var currentUser = httpContext.User?.Identity?.Name ?? _anonymousUser;
+            var roles = httpContext.User?.FindAll(ClaimTypes.Role).Select(x => x.Value).ToArray();
 
-            var roles = _httpContext.User?.FindAll(ClaimTypes.Role).Select(x => x.Value).ToArray();
-
-            if (!currentUser.Equals(anomUser) && CollectionUtil.IsEmpty(roles))
+            if (!currentUser.Equals(_anonymousUser) && (roles == null || !roles.Any()))
+            {
                 throw new ApiGeneralException(StatusCodes.Status404NotFound, $"No se encontraron roles para el usuario {currentUser}");
+            }
 
             _logger.LogInformation("El usuario que realiza la petición es: {CurrentUser}", currentUser);
 
             return new UsuarioRequestDto(currentUser, roles);
         }
-
     }
 }
 

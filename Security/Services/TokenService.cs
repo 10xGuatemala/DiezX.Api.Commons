@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace DiezX.Api.Commons.Security.Jwt
@@ -55,8 +56,9 @@ namespace DiezX.Api.Commons.Security.Jwt
             _tokenConfig = tokenConfig.Value;
             _logger = logger;
         }
+
         /// <summary>
-        /// Genera un token JWT basado en los claims proporcionados y la duración especificada del token.
+        /// Genera un token JWT standard basado en los claims proporcionados y la duración especificada del token.
         /// </summary>
         /// <param name="claims">Una lista de claims que se incluirán en el token.</param>
         /// <param name="tokenLifeTime">La duración del token en horas.</param>
@@ -84,6 +86,41 @@ namespace DiezX.Api.Commons.Security.Jwt
         }
 
         /// <summary>
+        /// Crea un token JWT utilizando una lista de reclamos, tiempo de vida del token y credenciales de firma.
+        /// </summary>
+        /// <param name="claims">Una lista de <see cref="Claim"/> que se incluirán en el JWT.</param>
+        /// <param name="tokenLifeTime">La duración del token en segundos.</param>
+        /// <param name="sign">Las credenciales de firma utilizadas para firmar el token.</param>
+        /// <returns>Un string que representa el token JWT firmado.</returns>
+        /// <remarks>
+        /// Este método utiliza <see cref="JwtSecurityTokenHandler"/> para crear un token JWT.
+        /// Se establece un tiempo de expiración para el token basado en el parámetro <paramref name="tokenLifeTime"/>.
+        /// La fecha y hora actuales se obtienen utilizando una instancia de <c>_dateUtil.GetTime()</c>, que define el momento de creación y el momento antes del cual el token no es válido (<see cref="SecurityTokenDescriptor.NotBefore"/>).
+        /// Se registra un mensaje informativo una vez que el token es creado exitosamente.
+        /// </remarks>
+        private string Create(List<Claim> claims, long tokenLifeTime, SigningCredentials sign)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var now = _dateUtil.GetTime();
+            var expirationTime = now.AddSeconds(tokenLifeTime);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = expirationTime,
+                NotBefore = now,
+                SigningCredentials = sign
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            _logger.LogInformation("Token creado exitosamente para {Claims} con duración de {Lifetime} segundos.", claims, tokenLifeTime);
+
+
+            return tokenHandler.WriteToken(token);
+        }
+
+        /// <summary>
         /// Crea un token estándar para un usuario con una lista de roles.
         /// </summary>
         /// <param name="username">El nombre de usuario para el cual se crea el token.</param>
@@ -97,22 +134,34 @@ namespace DiezX.Api.Commons.Security.Jwt
         /// </remarks>
         public string CreateStandardToken(string username, List<string> roles)
         {
-            var claims = new List<Claim>
-            {
-                // Agrega el nombre de usuario como un reclamo
-                new Claim(ClaimTypes.Name, username)
-            };
+            List<Claim> claims = ToClaimList(username, roles);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenConfig.Secret));
+            SigningCredentials sign = new(key, SecurityAlgorithms.HmacSha256Signature);
 
-            // Itera sobre la lista de roles y agrega cada uno como un reclamo
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
-            // Crea el token con la lista de reclamos
-            return Create(claims, _tokenConfig.DefaultTokenExpiration);
+            // Crear y retorna como cadena el token JWT basado en la descripción proporcionada.
+            return Create(claims, _tokenConfig.DefaultTokenExpiration, sign);
         }
 
+        /// <summary>
+        /// Crea un JWT utilizando una clave RSA privada.
+        /// </summary>
+        /// <returns>Un string que representa el token JWT firmado.</returns>
+        public string CreateRSAToken(string username, List<string> roles)
+        {
+            // Crear una instancia de RSA para el manejo de la criptografía.
+            using RSA rsa = RSA.Create();
+            // Importar la clave privada desde un archivo PEM.
+            rsa.ImportFromPem(File.ReadAllText(_tokenConfig.RsaKeyPath));
+
+            // Configurar las credenciales de firma utilizando el algoritmo RSA SHA-256.
+            var sign = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
+
+            // Transformar los datos a una lista de claim
+            List<Claim> claims = ToClaimList(username, roles);
+
+            // Crear y retorna como cadena el token JWT basado en la descripción proporcionada.
+            return Create(claims, _tokenConfig.DefaultTokenExpiration, sign);
+        }
 
         /// <summary>
         /// Decodifica un token JWT y valida su integridad y vigencia.
@@ -159,6 +208,35 @@ namespace DiezX.Api.Commons.Security.Jwt
 
             // Retornar el ClaimsPrincipal obtenido del token.
             return claimsPrincipal;
+        }
+
+        /// <summary>
+        /// Convierte un nombre de usuario y una lista de roles en una lista de objetos <see cref="Claim"/>.
+        /// </summary>
+        /// <param name="username">El nombre de usuario para el cual se generan los reclamos.</param>
+        /// <param name="roles">Una lista de roles que se incluirán como reclamos de tipo 'Role'.</param>
+        /// <returns>Una lista de objetos <see cref="Claim"/> que contienen el nombre de usuario y los roles como reclamos.</returns>
+        /// <remarks>
+        /// Este método crea un reclamo inicial con el tipo <see cref="ClaimTypes.Name"/> para el nombre de usuario.
+        /// Luego, itera sobre la lista de roles proporcionada, creando un reclamo para cada rol con el tipo <see cref="ClaimTypes.Role"/>.
+        /// Cada uno de estos reclamos se agrega a la lista de reclamos que se devuelve.
+        /// </remarks>
+        public static List<Claim> ToClaimList(string username, List<string> roles)
+        {
+            var claims = new List<Claim>
+            {
+                // Agrega el nombre de usuario como un reclamo
+                new Claim(ClaimTypes.Name, username)
+            };
+
+            // Itera sobre la lista de roles y agrega cada uno como un reclamo
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            return claims;
+
         }
 
     }
