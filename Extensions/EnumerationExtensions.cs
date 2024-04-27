@@ -20,64 +20,62 @@ namespace DiezX.Api.Commons.Extensions
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
-    /// Provides extension methods for <see cref="IEnumerable{T}"/> that enable additional
-    /// functionality like throwing exceptions if certain conditions are not met.
+    /// Proporciona métodos de extensión para <see cref="IEnumerable{T}"/> que habilitan funcionalidades adicionales
+    /// como lanzar excepciones si ciertas condiciones no se cumplen.
     /// </summary>
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// Returns the first element of a sequence, or throws DataNotFoundException if no element is found.
+        /// Devuelve el primer elemento de una secuencia, o lanza una DataNotFoundException si no se encuentra ningún elemento.
         /// </summary>
-        /// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">The <see cref="IEnumerable{T}"/> to return the first element of.</param>
-        /// <param name="exceptionMessage">The message of the exception if no element is found.</param>
-        /// <returns>The first element in the sequence.</returns>
-        /// <exception cref="DataNotFoundException">Thrown if the sequence is empty.</exception>
+        /// <typeparam name="T">El tipo de los elementos de <paramref name="source"/>.</typeparam>
+        /// <param name="source">El <see cref="IEnumerable{T}"/> del cual se devuelve el primer elemento.</param>
+        /// <param name="exceptionMessage">El mensaje de la excepción si no se encuentra ningún elemento.</param>
+        /// <returns>El primer elemento en la secuencia.</returns>
+        /// <exception cref="DataNotFoundException">Lanzada si la secuencia está vacía.</exception>
         public static T FirstOrThrow<T>(this IEnumerable<T> source, string exceptionMessage)
         {
             T result = source.FirstOrDefault();
-            return result == null ? throw new DataNotFoundException(exceptionMessage) : result;
+            return EqualityComparer<T>.Default.Equals(result, default) ? throw new DataNotFoundException(exceptionMessage) : result;
         }
 
-
         /// <summary>
-        /// Asynchronously returns the first element of a sequence, or throws DataNotFoundException if no element is found.
+        /// Devuelve de forma asincrónica el primer elemento de una secuencia, o lanza una DataNotFoundException si no se encuentra ningún elemento.
         /// </summary>
-        /// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">The <see cref="IQueryable{T}"/> to return the first element of.</param>
-        /// <param name="exceptionMessage">The message of the exception if no element is found.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the first element in the sequence.</returns>
-        /// <exception cref="DataNotFoundException">Thrown if the sequence is empty.</exception>
+        /// <typeparam name="T">El tipo de los elementos de <paramref name="source"/>.</typeparam>
+        /// <param name="source">El <see cref="IQueryable{T}"/> del cual se devuelve el primer elemento.</param>
+        /// <param name="exceptionMessage">El mensaje de la excepción si no se encuentra ningún elemento.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado de la tarea contiene el primer elemento en la secuencia.</returns>
+        /// <exception cref="DataNotFoundException">Lanzada si la secuencia está vacía.</exception>
         public static async Task<T> FirstOrThrowAsync<T>(this IQueryable<T> source, string exceptionMessage)
         {
             var result = await source.FirstOrDefaultAsync();
-            return result == null ? throw new DataNotFoundException(exceptionMessage) : result;
+            return EqualityComparer<T>.Default.Equals(result, default) ? throw new DataNotFoundException(exceptionMessage) : result;
         }
 
         /// <summary>
-        /// Converts the sequence to a list and throws an exception if the list is empty.
+        /// Convierte la secuencia en una lista y lanza una excepción si la lista está vacía.
         /// </summary>
-        /// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">The <see cref="IEnumerable{T}"/> to convert to a list.</param>
-        /// <param name="exceptionMessage">The message of the exception if the list is empty.</param>
-        /// <returns>The converted list of <see cref="IEnumerable{T}"/> if it is not empty.</returns>
-        /// <exception cref="DataNotFoundException">Thrown if the list is empty.</exception>
-        public static List<T> ToListOrThrow<T>(this IEnumerable<T> source, string exceptionMessage = "The list is empty.")
+        /// <typeparam name="T">El tipo de los elementos de <paramref name="source"/>.</typeparam>
+        /// <param name="source">El <see cref="IEnumerable{T}"/> a convertir en lista.</param>
+        /// <param name="exceptionMessage">El mensaje de la excepción si la lista está vacía.</param>
+        /// <returns>La lista convertida de <see cref="IEnumerable{T}"/> si no está vacía.</returns>
+        /// <exception cref="DataNotFoundException">Lanzada si la lista está vacía.</exception>
+        public static List<T> ToListOrThrow<T>(this IEnumerable<T> source, string exceptionMessage = "La lista está vacía.")
         {
             List<T> list = source.ToList();
             return !list.Any() ? throw new DataNotFoundException(exceptionMessage) : list;
         }
 
-
         /// <summary>
-        /// Converts the sequence to a list asynchronously and throws an exception if the list is empty.
+        /// Convierte la secuencia en una lista de forma asincrónica y lanza una excepción si la lista está vacía.
         /// </summary>
-        /// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">The <see cref="IQueryable{T}"/> to convert to a list.</param>
-        /// <param name="exceptionMessage">The message of the exception if the list is empty.</param>
-        /// <returns>The converted list of <see cref="IEnumerable{T}"/> if it is not empty.</returns>
-        /// <exception cref="DataNotFoundException">Thrown if the list is empty.</exception>
-        public static async Task<List<T>> ToListOrThrowAsync<T>(this IQueryable<T> source, string exceptionMessage = "The list is empty.")
+        /// <typeparam name="T">El tipo de los elementos de <paramref name="source"/>.</typeparam>
+        /// <param name="source">El <see cref="IQueryable{T}"/> a convertir en lista.</param>
+        /// <param name="exceptionMessage">El mensaje de la excepción si la lista está vacía.</param>
+        /// <returns>La lista convertida de <see cref="IEnumerable{T}"/> si no está vacía.</returns>
+        /// <exception cref="DataNotFoundException">Lanzada si la lista está vacía.</exception>
+        public static async Task<List<T>> ToListOrThrowAsync<T>(this IQueryable<T> source, string exceptionMessage = "La lista está vacía.")
         {
             List<T> list = await source.ToListAsync();
             return !list.Any() ? throw new DataNotFoundException(exceptionMessage) : list;
