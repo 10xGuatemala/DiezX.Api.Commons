@@ -146,6 +146,30 @@ namespace DiezX.Api.Commons.Notifications.Services
         }
 
         /// <summary>
+        /// Envía un correo electrónico con el código MFA para autenticación en dos pasos.
+        /// </summary>
+        /// <param name="name">Nombre del usuario.</param>
+        /// <param name="email">Correo electrónico del usuario.</param>
+        /// <param name="mfaCode">Código de autenticación generado.</param>
+        /// <param name="expiration">Tiempo de validez del código en segundos.</param>
+        public async Task SendMfaMailAsync(string name, string email, string mfaCode, int expiration)
+        {
+
+            var parameters = new Dictionary<string, string>
+        {
+            { "SenderCompany", _notificationConfig.SenderCompany },
+            { "SenderSystem", _notificationConfig.SenderSystem },
+            { "MfaCode", mfaCode },
+            { "CodeExpiration", (expiration / 60).ToString() } // se pasa a minutos
+        };
+
+            string subject = $"Tu código de verificación para {_notificationConfig.SenderSystem}";
+            await SendEmailAsync(name, email, "MfaCodeEmailTemplate.html", parameters, subject);
+
+        }
+
+
+        /// <summary>
         /// Auxiliar para enviar correos electrónicos que requieren un token de autenticación o recuperación.
         /// </summary>
         /// <param name="name">Nombre del destinatario del correo.</param>
@@ -255,19 +279,44 @@ namespace DiezX.Api.Commons.Notifications.Services
         /// <param name="subject">El asunto del correo electrónico.</param>
         private async Task SendEmailAsync(string name, string email, string templateName, Dictionary<string, string> parameters, string subject)
         {
-            var body = TemplateUtil.GetHtmlContent(EmbeddedResourceUtil.GetResource(templateName), parameters);
-            _logger.LogInformation("Preparando contenido del email con la plantilla {TemplateName}", templateName);
-            var mail = new EmailDto
+            try
             {
-                Email = email,
-                Body = body,
-                Name = name,
-                Subject = subject
-            };
+                // Cargar la plantilla del correo
+                var body = TemplateUtil.GetHtmlContent(EmbeddedResourceUtil.GetResource(templateName), parameters);
+                _logger.LogInformation("Plantilla {TemplateName} cargada exitosamente", templateName);
 
-            await _sendMailService.SendEmailAsync(mail);
-            _logger.LogInformation("Correo enviado a {Email} con asunto: {Subject}", email, subject);
+                // Cargar el CSS desde un archivo externo
+                string cssPath = "email-styles.css";
+                string cssStyles = await File.ReadAllTextAsync(cssPath);
+
+                // Asegurar que el CSS es válido (eliminar saltos de línea)
+                cssStyles = cssStyles.Replace("\r", "").Replace("\n", "").Replace("\"", "'");
+
+                // Inyectar el CSS en la plantilla reemplazando el placeholder {{EmailStyles}}
+                body = body.Replace("/* {{EmailStyles}} */", cssStyles);
+                _logger.LogInformation("CSS inyectado correctamente en la plantilla {TemplateName}", templateName);
+
+                // Crear el objeto de correo
+                var mail = new EmailDto
+                {
+                    Email = email,
+                    Body = body,
+                    Name = name,
+                    Subject = subject
+                };
+
+                // Enviar el correo
+                await _sendMailService.SendEmailAsync(mail);
+                _logger.LogInformation("Correo enviado a {Email} con asunto: {Subject}", email, subject);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al enviar correo a {Email} con plantilla {TemplateName}", email, templateName);
+                // Agregar contexto antes de re-lanzar la excepción
+                throw new InvalidOperationException($"Error al procesar el envío de correo a {email}.", ex);
+            }
         }
+
 
         /// <summary>
         /// Decodifica un token de confirmación de correo y extrae la información relevante.
