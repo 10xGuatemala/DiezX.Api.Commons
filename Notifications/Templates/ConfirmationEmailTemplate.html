@@ -3,43 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Correo de Confirmación de gestión</title>
+    <title>Aviso de Actualización de Contraseña</title>
+    <style>
+        /* aqui se injecta el css */
+        /* {{EmailStyles}} */
+    </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif;">
+<body>
 
-    <!-- Main Email Table Container -->
-    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4;">
-        <tr>
-            <td align="center" style="padding: 40px 0;">
+    <!-- Contenedor Principal del Correo -->
+    <div class="email-container">
 
-                <!-- Email Content Table -->
-                <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="600" style="background-color: #ffffff; border: 1px solid #cccccc;">
-                    <tr>
-                        <td style="padding: 40px 30px; text-align: left;">
+        <!-- Contenido del Correo -->
+        <div class="email-content">
 
-                            <!-- Header -->
-                            <h1 style="font-weight: bold; margin: 0;">{SenderCompany}</h1>
+            <!-- Encabezado -->
+            <div class="email-header">
+                <h1>{SenderCompany}</h1>
+            </div>
 
-                            <!-- Body -->
-                            <p style="margin: 20px 0;">Se ha iniciado la gestión <span style="font-weight: bold;">{ProcessId}</span> para la adhesión al Sistema de {SenderSystem}.</p>
-                            <p>Para confirmar su solicitud y continuar con el proceso de adhesión, debe validar su correo electrónico <span style="font-weight: bold;">{Username}</span> en el siguiente vínculo:</p>
+            <!-- Cuerpo -->
+            <div class="email-body">
+                <p>Hola,</p>
+                <p>La contraseña de tu cuenta en <strong>{SenderSystem}</strong> ha sido actualizada exitosamente.</p>
+                <p><strong>Nota importante:</strong> Si realizaste este cambio, no necesitas hacer nada. Si no reconoces esta acción, utiliza la opción de recuperación de contraseña en nuestro portal.</p>
+            </div>
 
-                            <!-- Button Link -->
-                            <div style="padding: 20px 0;">
-                                <a href="{RecoveryUrl}" style="background-color: #203c74; border-radius: 4px; padding: 12px 24px; color: white; text-decoration: none; font-weight: bold; display: inline-block;">CONFIRMA TU CORREO AQUÍ</a>
-                            </div>
+            <!-- Pie de Página -->
+            <div class="email-footer">
+                <p>Este es un correo automático, por favor no respondas.</p>
+            </div>
+        </div>
 
-                            <!-- Footer -->
-                            <p>El vínculo para confirmar su correo expira en <span style="font-weight: bold;">{TokenExpiration} horas</span>.</p>
-                            <p><span style="font-weight: bold;">Nota importante:</span> Si el enlace proporcionado expira antes de que pueda confirmar su correo, puede solicitar un nuevo enlace consultando su gestión en nuestro portal. Si no solicitaste adherirte al casillero electrónico, puedes simplemente borrar este mensaje.</p>
-                            <p style="font-style: italic;">Este es un correo automático, por favor no respondas a este mensaje.</p>
-                        </td>
-                    </tr>
-                </table>
-
-            </td>
-        </tr>
-    </table>
+    </div>
 
 </body>
 </html>

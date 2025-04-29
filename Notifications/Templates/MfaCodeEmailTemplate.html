@@ -1,15 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aviso de Actualización de Contraseña</title>
+    <title>Código de Verificación</title>
     <style>
         /* aqui se injecta el css */
         /* {{EmailStyles}} */
     </style>
 </head>
 <body>
+
     <!-- Contenedor Principal del Correo -->
     <div class="email-container">
 
@@ -24,12 +25,17 @@
             <!-- Cuerpo -->
             <div class="email-body">
                 <p>Hola,</p>
-                <p>La contraseña de tu cuenta en <strong>{SenderSystem}</strong> ha sido actualizada exitosamente.</p>
-                <p><strong>Nota importante:</strong> Si realizaste este cambio, no necesitas hacer nada. Si no reconoces esta acción, utiliza la opción de recuperación de contraseña en nuestro portal.</p>
+                <p>Para proteger tu cuenta, usa el siguiente código para verificar tu acceso al Sistema {SenderSystem}.</p>
+
+                <!-- Código MFA -->
+                <div class="mfa-code">{MfaCode}</div>
+
+                <p>Este código es válido por {CodeExpiration} minutos.</p>
             </div>
 
             <!-- Pie de Página -->
             <div class="email-footer">
+                <p>Si pides un nuevo código, este dejará de ser válido.</p>
                 <p>Este es un correo automático, por favor no respondas.</p>
             </div>
         </div>
