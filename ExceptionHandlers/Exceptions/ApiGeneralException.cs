@@ -13,15 +13,12 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-using System.Runtime.Serialization;
-
 namespace DiezX.Api.Commons.Exceptions
 {
 
     /// <summary>
     /// Excepción que incluye un código de estado (StatusCode) para operaciones en API REST.
     /// </summary>
-    [Serializable]
     public class ApiGeneralException : Exception
     {
         /// <summary>
@@ -38,29 +35,11 @@ namespace DiezX.Api.Commons.Exceptions
         {
             StatusCode = statusCode;
         }
-
-        /// <summary>
-        /// Constructor para serialización.
-        /// </summary>
-        protected ApiGeneralException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-
-            StatusCode = info.GetInt32("StatusCode");
-        }
-
         /// <summary>
         /// Constructor predeterminado protegido.
         /// </summary>
         protected ApiGeneralException()
         { }
-
-        // Serializa el StatusCode
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue("StatusCode", StatusCode);
-        }
 
     }
 }

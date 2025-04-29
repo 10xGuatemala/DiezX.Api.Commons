@@ -14,10 +14,7 @@
 //    limitations under the License.
 namespace DiezX.Api.Commons.ExceptionHandlers.Exceptions
 {
-    using System;
-    using System.Runtime.Serialization;
 
-    [Serializable]
     public class TokenExpiredException : Exception
     {
         // Constructor predeterminado
@@ -36,20 +33,6 @@ namespace DiezX.Api.Commons.ExceptionHandlers.Exceptions
             : base(message, inner)
         {
         }
-
-        // Constructor de deserialización
-        protected TokenExpiredException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        //Necesario si necesitas serializar datos adicionales
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            // Agrega aquí la serialización de cualquier dato adicional si es necesario
-        }
     }
-
 }
 
