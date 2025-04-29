@@ -3,10 +3,10 @@
 	<PropertyGroup>
 		<IsPackable>true</IsPackable>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<PackageVersion>1.3.0</PackageVersion>
+		<PackageVersion>1.4.0</PackageVersion>
 		<Authors>Miguel E. Guerra Connor</Authors>
 		<Company>10X de Guatemala, S.A</Company>
 		<Owners>10X de Guatemala, S.A</Owners>
@@ -16,11 +16,13 @@
 		<Description>Este módulo central está equipado con clases esenciales diseñadas para la creación de APIs RESTful utilizando el marco de desarrollo de DiezX. Proporciona herramientas y servicios comunes que se pueden utilizar a lo largo del proyecto.</Description>
 		<Copyright>10X de Guatemala, under the Apache License, Version 2.0</Copyright>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<PackageProjectUrl>https://github.com/SolucionesModernas10X/DiezX.Api.Commons</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/10xGuatemala/DiezX.Api.Commons</PackageProjectUrl>
 		<PackageTags>Commons API AspnetCore Rest</PackageTags>
 		<PackageId>DiezX.Api.Commons</PackageId>
 		<PackageIcon>logo_diezx.png</PackageIcon>
 		<NeutralLanguage>es-GT</NeutralLanguage>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
 	<PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
@@ -31,6 +33,7 @@
 	<ItemGroup>
 		<PackageReference Include="NodaTime" Version="3.1.11" />
 		<PackageReference Include="MailKit" Version="4.4.0" />
+		<PackageReference Include="Otp.NET" Version="1.4.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.1" />
 		<PackageReference Include="MimeTypesMap" Version="1.0.8" />
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.22.0.87781">
@@ -78,11 +81,13 @@
 		<Folder Include="Extensions\" />
 	</ItemGroup>
 	<ItemGroup>
+	    <EmbeddedResource Include="Images\logo_diezx.png" />
+	    <EmbeddedResource Include="Notifications\Templates\email-default-styles.css" />
 		<EmbeddedResource Include="Notifications\Templates\FirstPasswordTemplate.html" />
 		<EmbeddedResource Include="Notifications\Templates\PasswordUpdatedTemplate.html" />
 		<EmbeddedResource Include="Notifications\Templates\ConfirmationEmailTemplate.html" />
 		<EmbeddedResource Include="Notifications\Templates\PasswordRecoveryTemplate.html" />
-		<EmbeddedResource Include="Images\logo_diezx.png" />
 		<EmbeddedResource Include="Notifications\Templates\RejectionTemplate.html" />
+		<EmbeddedResource Include="Notifications\Templates\MfaCodeEmailTemplate.html" />
 	</ItemGroup>
 </Project>
