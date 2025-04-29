@@ -16,7 +16,6 @@ namespace DiezX.Api.Commons.Validators
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using Org.BouncyCastle.Pqc.Crypto.Lms;
 
     /// <summary>
     /// Atributo de validación para asegurar que la diferencia entre dos fechas no exceda un número especificado de meses.
@@ -74,23 +73,30 @@ namespace DiezX.Api.Commons.Validators
                 return ValidationResult.Success;
             }
 
+            // Verificar que ambas fechas tienen valor antes de continuar
+            if (!startDate.HasValue || !endDate.HasValue)
+            {
+                return new ValidationResult("Ambas fechas (inicio y fin) deben ser proporcionadas.");
+            }
 
             // Verificar que la fecha de inicio es anterior o igual a la fecha de fin
-            if (startDate > endDate)
+            if (startDate.Value > endDate.Value)
             {
                 return new ValidationResult("La fecha de inicio debe ser anterior o igual a la fecha de fin.");
             }
 
-            int monthDifference = ((endDate.Value.Year - startDate.Value.Year) * 12) + endDate.Value.Month - startDate.Value.Month;
+            // Calcular la diferencia en meses solo si ambas fechas tienen valor
+            int monthDifference = ((endDate.Value.Year - startDate.Value.Year) * 12) + (endDate.Value.Month - startDate.Value.Month);
             if (monthDifference > _maxMonthDifference)
             {
                 return new ValidationResult(string.IsNullOrWhiteSpace(ErrorMessage) ?
-              GetErrorMessage()
-            : FormatErrorMessage(validationContext.DisplayName));
+                    GetErrorMessage() :
+                    FormatErrorMessage(validationContext.DisplayName));
             }
 
             return ValidationResult.Success;
         }
+
 
         /// <summary>
         /// Genera un mensaje de error indicando que la diferencia entre las fechas es mayor al límite permitido.
