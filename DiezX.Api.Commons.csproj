@@ -81,13 +81,29 @@
 		<Folder Include="Extensions\" />
 	</ItemGroup>
 	<ItemGroup>
-	    <EmbeddedResource Include="Images\logo_diezx.png" />
-	    <EmbeddedResource Include="Notifications\Templates\email-default-styles.css" />
-		<EmbeddedResource Include="Notifications\Templates\FirstPasswordTemplate.html" />
-		<EmbeddedResource Include="Notifications\Templates\PasswordUpdatedTemplate.html" />
-		<EmbeddedResource Include="Notifications\Templates\ConfirmationEmailTemplate.html" />
-		<EmbeddedResource Include="Notifications\Templates\PasswordRecoveryTemplate.html" />
-		<EmbeddedResource Include="Notifications\Templates\RejectionTemplate.html" />
-		<EmbeddedResource Include="Notifications\Templates\MfaCodeEmailTemplate.html" />
+	    <EmbeddedResource Include="Images\logo_diezx.png">
+	        <LogicalName>DiezX.Api.Commons.Images.logo_diezx.png</LogicalName>
+	    </EmbeddedResource>
+	    <EmbeddedResource Include="Notifications\Templates\email-default-styles.css">
+	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.email-default-styles.css</LogicalName>
+	    </EmbeddedResource>
+		<EmbeddedResource Include="Notifications\Templates\FirstPasswordTemplate.html">
+	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.FirstPasswordTemplate.html</LogicalName>
+	    </EmbeddedResource>
+		<EmbeddedResource Include="Notifications\Templates\PasswordUpdatedTemplate.html">
+	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.PasswordUpdatedTemplate.html</LogicalName>
+	    </EmbeddedResource>
+		<EmbeddedResource Include="Notifications\Templates\ConfirmationEmailTemplate.html">
+	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.ConfirmationEmailTemplate.html</LogicalName>
+	    </EmbeddedResource>
+		<EmbeddedResource Include="Notifications\Templates\PasswordRecoveryTemplate.html">
+	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.PasswordRecoveryTemplate.html</LogicalName>
+	    </EmbeddedResource>
+		<EmbeddedResource Include="Notifications\Templates\RejectionTemplate.html">
+	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.RejectionTemplate.html</LogicalName>
+	    </EmbeddedResource>
+		<EmbeddedResource Include="Notifications\Templates\MfaCodeEmailTemplate.html">
+	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.MfaCodeEmailTemplate.html</LogicalName>
+	    </EmbeddedResource>
 	</ItemGroup>
 </Project>
