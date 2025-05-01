@@ -28,32 +28,21 @@ jobs:
       # Obtenemos el código fuente con historial completo para análisis profundo
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Necesario para que SonarCloud pueda analizar el historial de cambios
+          fetch-depth: 0  # Necesario para análisis de historial
       
-      # Cacheamos los paquetes de SonarCloud para mejorar el rendimiento
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+      # Compilamos el proyecto .NET
+      - name: Build .NET project
+        run: dotnet build --configuration Release
       
-      # Instalamos una versión específica de SonarScanner (5.13.0)
-      # Usamos esta versión porque es estable y compatible con el análisis de .NET
-      # Las versiones más recientes (>5.14) presentan errores con la característica addImpact
-      # en problemas externos (java.lang.UnsupportedOperationException: addImpact is not supported on external issues)
-      - name: Install SonarCloud scanner
-        shell: bash
-        run: |
-          dotnet tool install --global dotnet-sonarscanner --version 5.13.0
-      
-      # Ejecutamos el análisis: iniciamos SonarScanner, compilamos el proyecto, y finalizamos el análisis
-      - name: Build and analyze
+      # Solución utilizando la acción oficial de SonarCloud para evitar
+      # el error: java.lang.UnsupportedOperationException: addImpact is not supported on external issues
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Para acceso a información del repositorio y PR
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    
-        shell: bash
-        run: |
-          dotnet-sonarscanner begin /k:"10xGuatemala_DiezX.Api.Commons" /o:"10x-guatemala-public" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build --configuration Release
-          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=10xGuatemala_DiezX.Api.Commons
+            -Dsonar.organization=10x-guatemala-public
+            -Dsonar.sources=.
