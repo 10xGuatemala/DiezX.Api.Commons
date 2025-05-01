@@ -32,7 +32,10 @@ namespace DiezX.Api.Commons.Conventions
         [ProducesResponseType(typeof(ExtendedProblemDetail), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType(typeof(ExtendedProblemDetail))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Any)]
-        public static void Created() { }
+        public static void Created() 
+        { 
+            // Este método está intencionalmente vacío. Su propósito es únicamente definir convenciones de API.
+        }
 
 
         /// <summary>
@@ -52,7 +55,10 @@ namespace DiezX.Api.Commons.Conventions
         [ProducesResponseType(typeof(ExtendedProblemDetail), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType(typeof(ExtendedProblemDetail))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Any)]
-        public static void Ok() { }
+        public static void Ok() 
+        { 
+            // Este método está intencionalmente vacío. Su propósito es únicamente definir convenciones de API.
+        }
 
 
         /// <summary>
@@ -72,7 +78,10 @@ namespace DiezX.Api.Commons.Conventions
         [ProducesResponseType(typeof(ExtendedProblemDetail), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType(typeof(ExtendedProblemDetail))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Any)]
-        public static void NoContent() { }
+        public static void NoContent() 
+        { 
+            // Este método está intencionalmente vacío. Su propósito es únicamente definir convenciones de API.
+        }
 
     }
 }
