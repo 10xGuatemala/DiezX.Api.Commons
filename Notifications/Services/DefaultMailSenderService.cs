@@ -33,8 +33,6 @@ namespace DiezX.Api.Commons.Notifications.Services
         private readonly TokenService _tokenService;
         private readonly ILogger<DefaultMailSenderService> _logger;
 
-        private const string PROCESS_ID_CLAIM = "process_id";
-
         /// <summary>
         /// Inicializa una nueva instancia de la clase DefaultMailSenderService.
         /// </summary>
@@ -88,8 +86,8 @@ namespace DiezX.Api.Commons.Notifications.Services
         {
             var parameters = new Dictionary<string, string>
             {
-                { "SenderCompany", _notificationConfig.SenderCompany },
-                { "SenderSystem", _notificationConfig.SenderSystem }
+                { MailConstants.SENDER_COMPANY, _notificationConfig.SenderCompany },
+                { MailConstants.SENDER_SYSTEM, _notificationConfig.SenderSystem }
             };
 
             string subject = $"Tu contraseña del Sistema {_notificationConfig.SenderSystem} ha sido actualizada.";
@@ -112,12 +110,12 @@ namespace DiezX.Api.Commons.Notifications.Services
 
             var parameters = new Dictionary<string, string>
             {
-                { "SenderCompany", _notificationConfig.SenderCompany },
-                { "ProcessId", processId },
-                { "SenderSystem", _notificationConfig.SenderSystem },
-                { "Username", email },
-                { "RecoveryUrl", recoveryUrl },
-                { "TokenExpiration", tokenExpiration }
+                { MailConstants.SENDER_COMPANY, _notificationConfig.SenderCompany },
+                { MailConstants.PROCESS_ID, processId },
+                { MailConstants.SENDER_SYSTEM, _notificationConfig.SenderSystem },
+                { MailConstants.USERNAME, email },
+                { MailConstants.RECOVERY_URL, recoveryUrl },
+                { MailConstants.TOKEN_EXPIRATION, tokenExpiration }
             };
 
             string subject = $"Confirmación de gestión de adhesión {processId} al {_notificationConfig.SenderSystem}";
@@ -135,10 +133,10 @@ namespace DiezX.Api.Commons.Notifications.Services
         {
             var parameters = new Dictionary<string, string>
             {
-                { "SenderCompany", _notificationConfig.SenderCompany },
-                { "SenderSystem", _notificationConfig.SenderSystem },
-                { "ProcessId", processId },
-                { "RejectionDesc", rejectionDesc }
+                { MailConstants.SENDER_COMPANY, _notificationConfig.SenderCompany },
+                { MailConstants.SENDER_SYSTEM, _notificationConfig.SenderSystem },
+                { MailConstants.PROCESS_ID, processId },
+                { MailConstants.REJECTION_DESC, rejectionDesc }
             };
 
             string subject = $"Tu solicitud de Adhesión al Sistema {_notificationConfig.SenderSystem} ha sido denegada.";
@@ -157,10 +155,10 @@ namespace DiezX.Api.Commons.Notifications.Services
 
             var parameters = new Dictionary<string, string>
         {
-            { "SenderCompany", _notificationConfig.SenderCompany },
-            { "SenderSystem", _notificationConfig.SenderSystem },
-            { "MfaCode", mfaCode },
-            { "CodeExpiration", (expiration / 60).ToString() } // se pasa a minutos
+            { MailConstants.SENDER_COMPANY, _notificationConfig.SenderCompany },
+            { MailConstants.SENDER_SYSTEM, _notificationConfig.SenderSystem },
+            { MailConstants.MFA_CODE, mfaCode },
+            { MailConstants.CODE_EXPIRATION, (expiration / 60).ToString() } // se pasa a minutos
         };
 
             string subject = $"Tu código de verificación para {_notificationConfig.SenderSystem}";
@@ -186,11 +184,11 @@ namespace DiezX.Api.Commons.Notifications.Services
 
             var parameters = new Dictionary<string, string>
             {
-                { "SenderCompany", _notificationConfig.SenderCompany },
-                { "SenderSystem", _notificationConfig.SenderSystem },
-                { "Username", email },
-                { "RecoveryUrl", recoveryUrl },
-                { "TokenExpiration", tokenExpiration }
+                { MailConstants.SENDER_COMPANY, _notificationConfig.SenderCompany },
+                { MailConstants.SENDER_SYSTEM, _notificationConfig.SenderSystem },
+                { MailConstants.USERNAME, email },
+                { MailConstants.RECOVERY_URL, recoveryUrl },
+                { MailConstants.TOKEN_EXPIRATION, tokenExpiration }
             };
 
             await SendEmailAsync(name, email, templateName, parameters, subject);
@@ -215,7 +213,7 @@ namespace DiezX.Api.Commons.Notifications.Services
             List<Claim> claims = new()
             {
                 new Claim(ClaimTypes.NameIdentifier, username),
-                new Claim(PROCESS_ID_CLAIM, processId)
+                new Claim(MailConstants.PROCESS_ID_CLAIM, processId)
             };
 
             return _tokenService.Create(claims, _notificationConfig.RecoveryTokenExpiration);
@@ -339,7 +337,7 @@ namespace DiezX.Api.Commons.Notifications.Services
             var mailToken = new MailTokenDecodedDto()
             {
                 Username = tokenClaims.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-                ProcessId = tokenClaims.FindFirst(PROCESS_ID_CLAIM)?.Value,
+                ProcessId = tokenClaims.FindFirst(MailConstants.PROCESS_ID_CLAIM)?.Value,
             };
 
             _logger.LogInformation("Información del token: User: {Username}, Proceso: {ProcessId}",
