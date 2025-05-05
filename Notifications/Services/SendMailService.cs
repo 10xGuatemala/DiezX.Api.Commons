@@ -56,7 +56,12 @@ namespace DiezX.Api.Commons.Notifications.Services
             mimeMessage.From.Add(new MailboxAddress("no-responder", _notificationConfig.MailSender));
             mimeMessage.To.Add(new MailboxAddress(name, email));
             mimeMessage.Subject = subject;
-            mimeMessage.Body = new TextPart("html") { Text = body };
+            var builder = new BodyBuilder
+            {
+                HtmlBody = body,
+                TextBody = "Este correo contiene contenido HTML."
+            };
+            mimeMessage.Body = builder.ToMessageBody();
             return mimeMessage;
         }
 
@@ -103,4 +108,3 @@ namespace DiezX.Api.Commons.Notifications.Services
     }
 
 }
-

@@ -20,6 +20,7 @@ using DiezX.Api.Commons.Notifications.Dto;
 using DiezX.Api.Commons.Notifications.Utils;
 using Microsoft.Extensions.Options;
 using DiezX.Api.Commons.Resources;
+using PreMailer.Net;
 
 namespace DiezX.Api.Commons.Notifications.Services
 {
@@ -283,15 +284,19 @@ namespace DiezX.Api.Commons.Notifications.Services
                 var body = TemplateUtil.GetHtmlContent(EmbeddedResourceUtil.GetResource(templateName), parameters);
                 _logger.LogInformation("Plantilla {TemplateName} cargada exitosamente", templateName);
 
-                // Cargar el CSS desde un archivo externo
+                // Cargar el CSS desde un archivo externo o usar el recurso embebido por defecto (simplificado)
                 string cssPath = "email-styles.css";
-                string cssStyles = await File.ReadAllTextAsync(cssPath);
+                string cssStyles = File.Exists(cssPath)
+                    ? await File.ReadAllTextAsync(cssPath)
+                    : EmbeddedResourceUtil.GetResource("email-default-styles.css");
 
-                // Asegurar que el CSS es válido (eliminar saltos de línea)
-                cssStyles = cssStyles.Replace("\r", "").Replace("\n", "").Replace("\"", "'");
+                // Elimina los saltos de línea para que el CSS se incruste correctamente en una sola línea del HTML
+                cssStyles = string.Concat(cssStyles.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries));
 
-                // Inyectar el CSS en la plantilla reemplazando el placeholder {{EmailStyles}}
-                body = body.Replace("/* {{EmailStyles}} */", cssStyles);
+                // Inyectar el CSS en la plantilla reemplazando el placeholder {{EmailStyles}} y transformar a inline con PreMailer.Net
+               body = body.Replace("/* {{EmailStyles}} */", cssStyles);
+               body = PreMailer.Net.PreMailer.MoveCssInline(body, removeStyleElements: true).Html;
+
                 _logger.LogInformation("CSS inyectado correctamente en la plantilla {TemplateName}", templateName);
 
                 // Crear el objeto de correo
