@@ -19,6 +19,7 @@ using DiezX.Api.Commons.Utils;
 using System.Net;
 using DiezX.Api.Commons.ExceptionHandling;
 using DiezX.Api.Commons.ExceptionHandlers.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace DiezX.Api.Commons.Exceptions
 {
@@ -64,9 +65,9 @@ namespace DiezX.Api.Commons.Exceptions
             }
             catch (Exception ex)
             {
-                var problemDetails = CreateProblemDetails(context, ex);
+                var (problemDetails, logLevel, logMessage) = CreateProblemDetailsAndLogInfo(context, ex);
                 await ConfigureResponse(context, problemDetails);
-                LogException(ex);
+                _logger.Log(logLevel, ex, logMessage);
             }
         }
 
@@ -76,48 +77,57 @@ namespace DiezX.Api.Commons.Exceptions
         /// <param name="context">Contexto HTTP actual.</param>
         /// <param name="ex">Excepción capturada para procesar.</param>
         /// <returns>Un objeto <see cref="ProblemDetails"/> que representa los detalles del problema.</returns>
-        private ExtendedProblemDetail CreateProblemDetails(HttpContext context, Exception ex)
+        private (ExtendedProblemDetail, LogLevel, string) CreateProblemDetailsAndLogInfo(HttpContext context, Exception ex)
         {
             var problemDetails = new ExtendedProblemDetail
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "Error Interno del Servidor",
+                Title = "InternalServerError",
                 Detail = "Se ha presentado una inconsistencia técnica. Por favor, intente nuevamente más tarde.",
                 Timestamp = _dateUtil.GetTime(),
                 Instance = context.Request.Path
             };
 
+            LogLevel logLevel = LogLevel.Error;
+            string logMessage = $"Error crítico no manejado: {ex.Message}";
+
             if (ex is ApiGeneralException apiException)
             {
                 problemDetails.Status = apiException.StatusCode;
-                problemDetails.Title = "Error de Aplicación";
+                problemDetails.Title = apiException.Title ?? "Error de Aplicación";
                 problemDetails.Detail = apiException.Message;
+                logLevel = LogLevel.Information;
+                logMessage = $"Error de aplicación ({apiException.StatusCode}): {apiException.Message}";
             }
             else if (ex is ApiValidationParamsException validationException)
             {
                 problemDetails.Status = StatusCodes.Status400BadRequest;
-                problemDetails.Title = "Error de Validación";
+                problemDetails.Title = "ValidationError";
                 problemDetails.Detail = "Se encontraron errores de validación en la petición.";
                 problemDetails.InvalidParams = validationException.Errors;
+                logLevel = LogLevel.Information;
+                logMessage = $"Error de validación: {validationException.Message}. Parámetros inválidos: {JsonSerializer.Serialize(validationException.Errors)}";
             }
             else if (ex is TokenExpiredException tokenException)
             {
                 problemDetails.Status = StatusCodes.Status401Unauthorized;
-                problemDetails.Title = "Error en token";
+                problemDetails.Title = "TokenError";
                 problemDetails.Detail = tokenException.Message;
+                logLevel = LogLevel.Warning;
+                logMessage = $"Token expirado o inválido: {tokenException.Message}";
             }
             else if (ex is DataNotFoundException dataNotFoundException)
             {
                 problemDetails.Status = StatusCodes.Status404NotFound;
-                problemDetails.Title = "Datos no encontrados";
+                problemDetails.Title = "NoDataFoundError";
                 problemDetails.Detail = dataNotFoundException.Message;
-
+                logLevel = LogLevel.Information;
+                logMessage = $"Datos no encontrados: {dataNotFoundException.Message}";
             }
 
-            // Asigna el nombre del estado HTTP al título si es posible
-            problemDetails.Title = Enum.GetName(typeof(HttpStatusCode), problemDetails.Status) ?? problemDetails.Title;
+            problemDetails.Title ??= Enum.GetName(typeof(HttpStatusCode), problemDetails.Status);
 
-            return problemDetails;
+            return (problemDetails, logLevel, logMessage);
         }
 
         /// <summary>
@@ -131,15 +141,6 @@ namespace DiezX.Api.Commons.Exceptions
             context.Response.ContentType = "application/problem+json";
             var jsonResponse = JsonSerializer.Serialize(problemDetails, _jsonOptions);
             await context.Response.WriteAsync(jsonResponse);
-        }
-
-        /// <summary>
-        /// Registra la excepción en los logs del sistema.
-        /// </summary>
-        /// <param name="ex">La excepción capturada.</param>
-        private void LogException(Exception ex)
-        {
-            _logger.LogError(ex, "Ocurrió un error: {ErrorMessage}", ex.Message);
         }
     }
 }
