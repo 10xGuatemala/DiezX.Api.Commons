@@ -23,6 +23,9 @@ using MimeKit;
 namespace DiezX.Api.Commons.Notifications.Services
 {
 
+    /// <summary>
+    /// Servicio para el envío de correos electrónicos
+    /// </summary>
     public class SendMailService
     {
         private readonly NotificationsConfig _notificationConfig;
@@ -32,7 +35,11 @@ namespace DiezX.Api.Commons.Notifications.Services
         //constante
         const string ERROR_ENVIO = "Se produjo un error al enviar un correo electrónico a los destinatarios especificados.";
 
-        // Constructor para inicializar las dependencias
+        /// <summary>
+        /// Inicializa una nueva instancia del servicio de envío de correos
+        /// </summary>
+        /// <param name="notificationConfig">Configuración de notificaciones</param>
+        /// <param name="logger">Logger para el servicio</param>
         public SendMailService(
             IOptions<NotificationsConfig> notificationConfig,
             ILogger<SendMailService> logger)
