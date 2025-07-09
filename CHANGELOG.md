@@ -5,6 +5,20 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2025-07-09
+
+### Added
+
+- Configuración flexible de cookies mediante CookieConfig desde el appsettings
+- AuthUtil para centralizar lógica de generación y revocación de autenticación
+- Nuevo AuthControllerBase para centralizar respuesta de token en cookies en Controlladores que manejen seguridad por medio de HTTP-Only
+
+### Changed
+
+- Mejoras del DefaultExceptionHandler y logging contextual
+- Corrección en la obtención de estilos CSS para plantillas de correo
+- Eliminación de launchSettings.json por ser innecesario en una librería
+
 ## [1.4.0] - 2025-04-29
 
 ### Added
@@ -69,6 +83,9 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
   - Servicios de notificación
   - Utilidades comunes
 
+[1.7.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.7.0
+[1.6.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.6.0
+[1.5.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.5.0
 [1.4.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.4.0
 [1.3.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.3.0
 [1.2.1]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.2.1

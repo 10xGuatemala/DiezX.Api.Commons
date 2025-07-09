@@ -34,8 +34,10 @@ Este proyecto requiere las siguientes dependencias:
 - MailKit, versión `4.4.0`
 - System.IdentityModel.Tokens.Jwt, versión `7.4.1`
 - MimeTypesMap, versión `1.0.8`
-- SonarAnalyzer.CSharp, versión `9.21.0.87781`
+- SonarAnalyzer.CSharp, versión `9.22.0.87781`
 - Otp.NET versión `1.4.0`
+- PreMailer.Net versión `2.6.0`
+- Microsoft.EntityFrameworkCore `7.0.18` - Requerido para los métodos de extensión asincrónicos. Compatible con proyectos que usen EF Core 8.x.
 
 ## Estructura del Proyecto
 
@@ -76,22 +78,25 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
     - `PasswordUpdatedTemplate.html`: Plantilla para correos de actualización de contraseña.
     - `RejectionTemplate.html`: Plantilla para correos donde se rechaza solicitud.
     - `MfaCodeEmailTemplate`: Plantilla para enviar por correo código de MFA
+  - **Utils**
+    - `TemplateUtil.cs`: Utilidades para trabajar con plantillas de correo electrónico.
 - **Remote**
   - `RemoteUtils.cs`: Clase de utilidades para manejar aspectos de las solicitudes remotas. Implementa un metodo para obtener la IP del usuario.
-
-- **Utils**
-  - `TemplateUtil.cs`: Utilidades para trabajar con plantillas de correo electrónico.
-
-- **Properties**
-  - `launchSettings.json`: Configuraciones de lanzamiento para el entorno de desarrollo.
-
+  
 - **Resources**
   - `EmbeddedResourceUtil.cs`: Utilidades para trabajar con recursos incrustados.
   - `StaticFileUtil.cs`: Utilidades para trabajar con archivos estáticos.
   - `StreamUtils.cs`: Utilidades para trabajar con flujos de datos.
 
 - **Security**
-  - **Configurations**: Configuraciones relacionadas con la seguridad.
+  - **Configurations**
+    - `CookieConfig.cs`: Configuración para cookies de autenticación, define propiedades como nombres de cookies, tiempo de vida, y opciones de seguridad (HttpOnly, Secure, SameSite).
+    - `MfaConfig.cs`: Configuración para autenticación de doble factor, incluye parámetros como longitud del código, tiempo de expiración y opciones del algoritmo TOTP.
+    - `TokenConfig.cs`: Configuración para tokens JWT, define propiedades como secreto, tiempo de vida, y opciones de firma.
+
+  - **Controllers**
+    - `AuthControllerBase.cs`: Controlador base que proporciona funcionalidad común para respuestas de autenticación, incluyendo manejo de cookies seguras y respuestas adaptadas según el entorno.
+
   - **Dto**: Objetos de Transferencia de Datos para la seguridad.
   - **Services**
     - `TokenService.cs`: Servicio para la creación y manejo de tokens.
@@ -100,6 +105,7 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
   - **Utils**
     - `HeaderUtil.cs`: Utileria para Decodificar la cabecera de autorización tipo BASIC y extraer las credenciales del usuario.
     - `RefreshTokenUtil`: Utileria para la generación de Refresh Tokens seguros.
+    - `AuthUtil.cs`: Utilidad para gestión de autenticación que maneja cookies seguras para tokens JWT y refresh tokens, implementa configuraciones de seguridad (HttpOnly, Secure, SameSite) y adapta respuestas según el entorno (desarrollo/producción).
 
 - **Strings**
   - `StringUtil.cs`: Utilidades para operaciones comunes con cadenas de texto.
