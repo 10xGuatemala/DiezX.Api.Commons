@@ -270,6 +270,8 @@ namespace DiezX.Api.Commons.Notifications.Services
 
         /// <summary>
         /// Enviar correos electrónicos utilizando los parámetros y la plantilla especificada.
+        /// Puedes especificar tu propio css incluyendolo dentro del proyecto en la ruta Resources/email-styles.css
+        /// Si quieres saber que atributos agregar al css consulta: https://github.com/10xGuatemala/DiezX.Api.Commons/blob/main/Notifications/Templates/email-default-styles.css
         /// </summary>
         /// <param name="name">El nombre del destinatario.</param>
         /// <param name="email">El correo electrónico del destinatario.</param>
@@ -285,7 +287,7 @@ namespace DiezX.Api.Commons.Notifications.Services
                 _logger.LogInformation("Plantilla {TemplateName} cargada exitosamente", templateName);
 
                 // Cargar el CSS desde un archivo externo o usar el recurso embebido por defecto (simplificado)
-                string cssPath = "email-styles.css";
+                string cssPath = Path.Combine("Resources", "email-styles.css");
                 string cssStyles = File.Exists(cssPath)
                     ? await File.ReadAllTextAsync(cssPath)
                     : EmbeddedResourceUtil.GetResource("email-default-styles.css");
