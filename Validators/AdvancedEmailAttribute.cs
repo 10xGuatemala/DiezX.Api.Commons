@@ -39,7 +39,7 @@ namespace DiezX.Api.Commons.Validators
         /// El resultado de la validación. Retorna <see cref="ValidationResult.Success"/> si la validación es exitosa;
         /// de lo contrario, retorna un objeto <see cref="ValidationResult"/> con el mensaje de error.
         /// </returns>
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if (value == null)
             {

@@ -20,10 +20,14 @@ using System.Text.Json.Serialization;
 namespace DiezX.Api.Commons.Converters
 {
     /// <summary>
-    /// Clase base abstracta para la conversión de fechas en JSON.
+    /// Clase base para convertidores de fecha en JSON
     /// </summary>
+    /// <typeparam name="T">Tipo de fecha a convertir (DateTime o DateTimeOffset)</typeparam>
     public abstract class JsonDateConverterBase<T> : JsonConverter<T>
     {
+        /// <summary>
+        /// Formato de fecha utilizado para la serialización/deserialización
+        /// </summary>
         protected readonly string _dateFormat;
 
         /// <summary>
@@ -54,14 +58,14 @@ namespace DiezX.Api.Commons.Converters
         /// <summary>
         /// Constructor con un formato específico o predeterminado.
         /// </summary>
-        public JsonDateTimeConverter(string dateFormat = null)
+        public JsonDateTimeConverter(string? dateFormat = null)
         : base(dateFormat ?? "dd/MM/yyyy") { }
 
         /// <summary>
         /// Deserialización de DateTime.
         /// </summary>
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-            DateTime.ParseExact(reader.GetString(), _dateFormat, CultureInfo.InvariantCulture);
+            DateTime.ParseExact(reader.GetString()!, _dateFormat, CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Serialización de DateTime.
@@ -78,7 +82,7 @@ namespace DiezX.Api.Commons.Converters
         /// <summary>
         /// Constructor con un formato específico o predeterminado.
         /// </summary>
-        public JsonDateTimeOffsetConverter(string dateFormat = null)
+        public JsonDateTimeOffsetConverter(string? dateFormat = null)
         : base(dateFormat ?? "dd/MM/yyyy HH:mm:ss") { }
 
         /// <summary>
