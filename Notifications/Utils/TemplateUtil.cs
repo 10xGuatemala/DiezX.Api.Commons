@@ -17,6 +17,9 @@ using System.Text;
 namespace DiezX.Api.Commons.Notifications.Utils
 {
 
+    /// <summary>
+    /// Utilidad para el manejo de plantillas de correo electrónico
+    /// </summary>
     public static class TemplateUtil
     {
         /// <summary>
