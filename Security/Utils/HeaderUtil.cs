@@ -17,6 +17,9 @@ using System.Text;
 namespace DiezX.Api.Commons.Security
 {
 
+    /// <summary>
+    /// Utilidad para el manejo de encabezados HTTP
+    /// </summary>
     public static class HeaderUtil
     {
         /// <summary>

@@ -20,7 +20,7 @@ namespace DiezX.Api.Commons.Extensions
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
-    /// Proporciona métodos de extensión para <see cref="IEnumerable{T}"/> que habilitan funcionalidades adicionales
+    /// Proporciona métodos de extensión para <see cref="IEnumerable{T}"/> y <see cref="IQueryable{T}"/> que habilitan funcionalidades adicionales
     /// como lanzar excepciones si ciertas condiciones no se cumplen.
     /// </summary>
     public static class EnumerableExtensions
@@ -73,7 +73,7 @@ namespace DiezX.Api.Commons.Extensions
         /// <typeparam name="T">El tipo de los elementos de <paramref name="source"/>.</typeparam>
         /// <param name="source">El <see cref="IQueryable{T}"/> a convertir en lista.</param>
         /// <param name="exceptionMessage">El mensaje de la excepción si la lista está vacía.</param>
-        /// <returns>La lista convertida de <see cref="IEnumerable{T}"/> si no está vacía.</returns>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado de la tarea contiene la lista convertida si no está vacía.</returns>
         /// <exception cref="DataNotFoundException">Lanzada si la lista está vacía.</exception>
         public static async Task<List<T>> ToListOrThrowAsync<T>(this IQueryable<T> source, string exceptionMessage = "La lista está vacía.")
         {
@@ -81,6 +81,5 @@ namespace DiezX.Api.Commons.Extensions
             return !list.Any() ? throw new DataNotFoundException(exceptionMessage) : list;
         }
     }
-
 }
 

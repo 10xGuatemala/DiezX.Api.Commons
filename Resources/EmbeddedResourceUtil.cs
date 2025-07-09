@@ -21,10 +21,11 @@ namespace DiezX.Api.Commons.Resources
     /// Clase de utilidad para leer y administrar recursos incrustados (Embedded Resources).
     /// Para que un archivo pueda ser encontrado debe estar marcada con Acción de compilación Embedded Resource
     /// o agregarla manualmente en el .csproj en ItemGroup por ejemplo:
-    /// <ItemGroup>
-    /// ...
-    /// <EmbeddedResource Include = "Templates\FirstPasswordTemplate.html" />
-    ///</ ItemGroup >
+    /// <code>
+    ///<ItemGroup>
+    ///     <EmbeddedResource Include="Templates\FirstPasswordTemplate.html" >;
+    /// </ItemGroup>
+    /// </code>
     /// </summary>
     public static class EmbeddedResourceUtil
     {

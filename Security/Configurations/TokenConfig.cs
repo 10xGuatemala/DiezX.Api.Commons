@@ -14,6 +14,9 @@
 //    limitations under the License.
 namespace DiezX.Api.Commons.Security
 {
+    /// <summary>
+    /// Configuración para la generación y validación de tokens
+    /// </summary>
     public class TokenConfig
     {
 

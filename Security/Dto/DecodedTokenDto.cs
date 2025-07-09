@@ -17,9 +17,19 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace DiezX.Api.Commons.Security.Dto
 {
+    /// <summary>
+    /// DTO para el token decodificado
+    /// </summary>
     public class DecodedTokenDto
     {
+        /// <summary>
+        /// Claims principales del token
+        /// </summary>
         public ClaimsPrincipal ClaimPrincipal { get; set; }
+
+        /// <summary>
+        /// Token de seguridad
+        /// </summary>
         public SecurityToken SecurityToken { get; set; }
     }
 }

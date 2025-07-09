@@ -73,10 +73,10 @@ namespace DiezX.Api.Commons.Utils
         }
 
         /// <summary>
-        /// Obtiene la extensión del archivo basada en su ContentType.
+        /// Obtiene la extensión del archivo basado en el tipo de contenido
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
+        /// <param name="contentType">Tipo de contenido MIME del archivo</param>
+        /// <returns>La extensión del archivo incluyendo el punto (.)</returns>
         public static string GetExtension(string contentType)
         {
             return MimeTypesMap.GetExtension(contentType);

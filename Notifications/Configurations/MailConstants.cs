@@ -16,21 +16,58 @@
 namespace DiezX.Api.Commons.Notifications.Configurations
 {
     /// <summary>
-    /// Constantes para los nombres de parámetros principales utilizados en los servicios de correo.
+    /// Constantes utilizadas en el sistema de correo electrónico
     /// </summary>
     public static class MailConstants
     {
-        public const string SENDER_COMPANY = "SenderCompany";
-        public const string SENDER_SYSTEM = "SenderSystem";
-        public const string USERNAME = "Username";
-        public const string RECOVERY_URL = "RecoveryUrl";
-        public const string TOKEN_EXPIRATION = "TokenExpiration";
-        public const string PROCESS_ID = "ProcessId";
-        public const string REJECTION_DESC = "RejectionDesc";
-        public const string MFA_CODE = "MfaCode";
-        public const string CODE_EXPIRATION = "CodeExpiration";
-        
-        // Constantes para claims
-        public const string PROCESS_ID_CLAIM = "process_id";
+        /// <summary>
+        /// Nombre de la compañía que envía el correo
+        /// </summary>
+        public const string SENDER_COMPANY = "company";
+
+        /// <summary>
+        /// Nombre del sistema que envía el correo
+        /// </summary>
+        public const string SENDER_SYSTEM = "system";
+
+        /// <summary>
+        /// Nombre de usuario para las plantillas de correo
+        /// </summary>
+        public const string USERNAME = "username";
+
+        /// <summary>
+        /// URL base para la recuperación de contraseña
+        /// </summary>
+        public const string RECOVERY_URL = "recoveryUrl";
+
+        /// <summary>
+        /// Tiempo de expiración del token
+        /// </summary>
+        public const string TOKEN_EXPIRATION = "tokenExpiration";
+
+        /// <summary>
+        /// Identificador del proceso
+        /// </summary>
+        public const string PROCESS_ID = "processId";
+
+        /// <summary>
+        /// Descripción del motivo de rechazo
+        /// </summary>
+        public const string REJECTION_DESC = "rejectionDesc";
+
+        /// <summary>
+        /// Código MFA para autenticación de dos factores
+        /// </summary>
+        public const string MFA_CODE = "mfaCode";
+
+        /// <summary>
+        /// Tiempo de expiración del código
+        /// </summary>
+        public const string CODE_EXPIRATION = "codeExpiration";
+
+        /// <summary>
+        /// Claim para el identificador del proceso
+        /// </summary>
+        public const string PROCESS_ID_CLAIM = "processId";
     }
 } 

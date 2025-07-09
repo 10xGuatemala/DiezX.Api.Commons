@@ -18,15 +18,20 @@ using HeyRed.Mime;
 namespace DiezX.Api.Commons.Utils
 {
     /// <summary>
-    /// Utilidad para el manejo de operaciones de archivos en el sistema de archivos.
-    /// Este archivo necesita las propiedades StaticFiles del appsettings.json
+    /// Utilidad para manejar archivos estáticos en la aplicación
     /// </summary>
     public static class StaticFileUtil
     {
-
         private static readonly TraceSource TraceSource = new("DiezX.Api.Commons");
 
+        /// <summary>
+        /// Ruta del directorio donde se almacenan los archivos estáticos
+        /// </summary>
         public static string DirectoryPath { get; private set; } = "";
+
+        /// <summary>
+        /// Ruta base para las solicitudes de archivos estáticos
+        /// </summary>
         public static string RequestPath { get; private set; } = "";
 
         /// <summary>

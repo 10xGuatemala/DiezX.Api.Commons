@@ -15,22 +15,32 @@
 namespace DiezX.Api.Commons.ExceptionHandlers.Exceptions
 {
 
+    /// <summary>
+    /// Excepción que se lanza cuando un token ha expirado
+    /// </summary>
     public class TokenExpiredException : Exception
     {
-        // Constructor predeterminado
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase TokenExpiredException
+        /// </summary>
         public TokenExpiredException()
         {
         }
 
-        // Constructor que acepta el mensaje de error
-        public TokenExpiredException(string message)
-            : base(message)
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase TokenExpiredException con un mensaje de error específico
+        /// </summary>
+        /// <param name="message">Mensaje que describe el error</param>
+        public TokenExpiredException(string message) : base(message)
         {
         }
 
-        // Constructor que acepta el mensaje de error y una excepción interna
-        public TokenExpiredException(string message, Exception inner)
-            : base(message, inner)
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase TokenExpiredException con un mensaje de error específico y una excepción interna
+        /// </summary>
+        /// <param name="message">Mensaje que describe el error</param>
+        /// <param name="innerException">Excepción que causó esta excepción</param>
+        public TokenExpiredException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

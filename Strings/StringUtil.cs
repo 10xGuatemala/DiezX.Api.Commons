@@ -16,6 +16,9 @@ using System.Globalization;
 
 namespace DiezX.Api.Commons.Strings
 {
+    /// <summary>
+    /// Utilidad para el manejo y manipulación de cadenas de texto
+    /// </summary>
     public static class StringUtils
     {
         private static TextInfo _textInfo;
@@ -31,7 +34,7 @@ namespace DiezX.Api.Commons.Strings
 
         /// <summary>
         /// Convierte una cadena al formato "Title Case" (tipo oración). Los textos que van todas las letras en mayusculas también son convertidas.
-        //  Si la cultura o no está configurada (SetCulture), se utiliza la cultura del sistema actual
+        /// Si la cultura o no está configurada (SetCulture), se utiliza la cultura del sistema actual.
         /// </summary>
         /// <param name="input">La cadena de entrada.</param>
         /// <returns>La cadena en formato "Title Case".</returns>

@@ -14,6 +14,9 @@
 //    limitations under the License.
 namespace DiezX.Api.Commons.Notifications.Dto
 {
+    /// <summary>
+    /// DTO para la configuración de correo electrónico
+    /// </summary>
     public class EmailDto
     {
         /// <summary>

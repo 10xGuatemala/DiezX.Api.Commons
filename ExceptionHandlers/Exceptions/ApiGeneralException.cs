@@ -27,6 +27,11 @@ namespace DiezX.Api.Commons.Exceptions
         public int StatusCode { get; private set; }
 
         /// <summary>
+        /// Título o encabezado de la excepción.
+        /// </summary>
+        public string? Title { get; private set; }
+
+        /// <summary>
         /// Constructor para excepción con mensaje personalizado y código de estado.
         /// </summary>
         /// <param name="statusCode">Código de estado HTTP.</param>
@@ -35,6 +40,19 @@ namespace DiezX.Api.Commons.Exceptions
         {
             StatusCode = statusCode;
         }
+
+        /// <summary>
+        /// Constructor para excepción con código de estado, título y mensaje.
+        /// </summary>
+        /// <param name="statusCode">Código de estado HTTP.</param>
+        /// <param name="title">Título o encabezado de la excepción.</param>
+        /// <param name="message">Mensaje de la excepción.</param>
+        public ApiGeneralException(int statusCode, string title, string message) : base(message)
+        {
+            StatusCode = statusCode;
+            Title = title;
+        }
+
         /// <summary>
         /// Constructor predeterminado protegido.
         /// </summary>

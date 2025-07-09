@@ -14,9 +14,19 @@
 //    limitations under the License.
 namespace DiezX.Api.Commons.Notifications.Dto
 {
+    /// <summary>
+    /// DTO para el token de correo decodificado
+    /// </summary>
     public class MailTokenDecodedDto
     {
+        /// <summary>
+        /// Nombre de usuario asociado al token
+        /// </summary>
         public string Username { get; set; }
+
+        /// <summary>
+        /// Identificador del proceso asociado al token
+        /// </summary>
         public string ProcessId { get; set; }
     }
 }
