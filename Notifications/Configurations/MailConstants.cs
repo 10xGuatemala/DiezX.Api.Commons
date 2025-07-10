@@ -23,47 +23,47 @@ namespace DiezX.Api.Commons.Notifications.Configurations
         /// <summary>
         /// Nombre de la compañía que envía el correo
         /// </summary>
-        public const string SENDER_COMPANY = "company";
+        public const string SENDER_COMPANY = "SenderCompany";
 
         /// <summary>
         /// Nombre del sistema que envía el correo
         /// </summary>
-        public const string SENDER_SYSTEM = "system";
+        public const string SENDER_SYSTEM = "SenderSystem";
 
         /// <summary>
         /// Nombre de usuario para las plantillas de correo
         /// </summary>
-        public const string USERNAME = "username";
+        public const string USERNAME = "Username";
 
         /// <summary>
         /// URL base para la recuperación de contraseña
         /// </summary>
-        public const string RECOVERY_URL = "recoveryUrl";
+        public const string RECOVERY_URL = "RecoveryUrl";
 
         /// <summary>
         /// Tiempo de expiración del token
         /// </summary>
-        public const string TOKEN_EXPIRATION = "tokenExpiration";
+        public const string TOKEN_EXPIRATION = "TokenExpiration";
 
         /// <summary>
         /// Identificador del proceso
         /// </summary>
-        public const string PROCESS_ID = "processId";
+        public const string PROCESS_ID = "ProcessId";
 
         /// <summary>
         /// Descripción del motivo de rechazo
         /// </summary>
-        public const string REJECTION_DESC = "rejectionDesc";
+        public const string REJECTION_DESC = "RejectionDesc";
 
         /// <summary>
         /// Código MFA para autenticación de dos factores
         /// </summary>
-        public const string MFA_CODE = "mfaCode";
+        public const string MFA_CODE = "MfaCode";
 
         /// <summary>
         /// Tiempo de expiración del código
         /// </summary>
-        public const string CODE_EXPIRATION = "codeExpiration";
+        public const string CODE_EXPIRATION = "CodeExpiration";
 
         /// <summary>
         /// Claim para el identificador del proceso
