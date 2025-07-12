@@ -23,9 +23,10 @@
 		<NeutralLanguage>es-GT</NeutralLanguage>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8765;</NoWarn>
+		<!-- Prevenir generación de archivos innecesarios para librerías -->
+		<UseAppHost>false</UseAppHost>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
-	<PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<WarningLevel>4</WarningLevel>
 		<NoWarn>$(NoWarn);S3655</NoWarn>
