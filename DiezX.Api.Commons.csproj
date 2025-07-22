@@ -6,7 +6,7 @@
 		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<PackageVersion>1.7.0</PackageVersion>
+		<PackageVersion>1.7.1</PackageVersion>
 		<Authors>Miguel E. Guerra Connor</Authors>
 		<Company>10X de Guatemala, S.A</Company>
 		<Owners>10X de Guatemala, S.A</Owners>
@@ -17,7 +17,7 @@
 		<Copyright>10X de Guatemala, under the Apache License, Version 2.0</Copyright>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/10xGuatemala/DiezX.Api.Commons</PackageProjectUrl>
-		<PackageTags>Commons API AspnetCore Rest</PackageTags>
+		<PackageTags>DiezX Commons API AspnetCore Rest</PackageTags>
 		<PackageId>DiezX.Api.Commons</PackageId>
 		<PackageIcon>logo_diezx.png</PackageIcon>
 		<NeutralLanguage>es-GT</NeutralLanguage>

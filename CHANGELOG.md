@@ -5,6 +5,14 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.1] - 2025-07-22
+
+### Fixed
+
+- Se corrigió la plantilla de correo **FirstPassword** para que muestre correctamente las variables correctas.
+- Se mejoró la estructura y claridad del mensaje en la plantilla **FirstPassword**.
+- Ajuste general a las plantillas 
+  
 ## [1.7.0] - 2025-07-12
 
 ### Added
@@ -83,7 +91,8 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
   - Servicios de seguridad
   - Servicios de notificación
   - Utilidades comunes
-
+  
+[1.7.1]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.7.1
 [1.7.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.7.0
 [1.3.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.3.0
 [1.2.1]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.2.1
