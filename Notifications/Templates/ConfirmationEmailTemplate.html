@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aviso de Actualización de Contraseña</title>
+    <title>Correo de Confirmación de gestión</title>
     <style>
         /* aqui se injecta el css */
         /* {{EmailStyles}} */
@@ -25,12 +25,19 @@
             <!-- Cuerpo -->
             <div class="email-body">
                 <p>Hola,</p>
-                <p>La contraseña de tu cuenta en <strong>{SenderSystem}</strong> ha sido actualizada exitosamente.</p>
-                <p><strong>Nota importante:</strong> Si realizaste este cambio, no necesitas hacer nada. Si no reconoces esta acción, utiliza la opción de recuperación de contraseña en nuestro portal.</p>
+                <p>Se ha iniciado la gestión: <strong>{ProcessId}</strong> para la adhesión al Sistema <strong>{SenderSystem}.</strong></p>
+                <p>Para confirmar su solicitud y continuar con el proceso de adhesión, debe validar su correo electrónico <strong>{Username}</strong> dando clic en el siguiente botón:</p>
+              
+                <div class="confirm-button">
+                    <a href="{RecoveryUrl}">CONFIRMA TU CORREO AQUÍ</a>
+                </div>
+                <p>El enlace del botón expira en <strong>{TokenExpiration} horas</strong>.</p>
             </div>
 
             <!-- Pie de Página -->
             <div class="email-footer">
+                <p><strong>Nota importante:</strong>  Si el enlace proporcionado expira antes de que pueda confirmar su correo electrónico, puede solicitar uno nuevo consultando en el portal de <strong>{SenderSystem}.</strong>. Si usted no solicitó unirse al sistema, puede simplemente ignorar este mensaje.
+                </p>
                 <p>Este es un correo automático, por favor no respondas.</p>
             </div>
         </div>
