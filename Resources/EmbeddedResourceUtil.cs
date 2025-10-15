@@ -1,4 +1,4 @@
-﻿//
+//
 //  Copyright © 2024 10X de Guatemala, S.A.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,6 +52,44 @@ namespace DiezX.Api.Commons.Resources
             }
 
             throw new ArgumentException($"El recurso '{partialName}' no se encuentra en el ensamblado.", nameof(partialName));
+        }
+
+        /// <summary>
+        /// Intenta obtener un recurso embebido desde el ensamblado que llama (calling assembly).
+        /// Útil para permitir que proyectos que consumen esta librería puedan proporcionar sus propios recursos.
+        /// </summary>
+        /// <param name="partialName">Parte del nombre del recurso que se desea obtener.</param>
+        /// <param name="content">Contenido del recurso si se encuentra.</param>
+        /// <returns>True si el recurso fue encontrado, false en caso contrario.</returns>
+        public static bool TryGetResourceFromCallingAssembly(string partialName, out string? content)
+        {
+            content = null;
+            
+            try
+            {
+                // Obtener el ensamblado que llamó a este método (el proyecto que usa la librería)
+                var callingAssembly = Assembly.GetCallingAssembly();
+                
+                // Buscar el recurso en el ensamblado que llama
+                var resourceName = Array.Find(callingAssembly.GetManifestResourceNames(), r => r.EndsWith(partialName));
+                
+                if (resourceName != null)
+                {
+                    using Stream stream = callingAssembly.GetManifestResourceStream(resourceName);
+                    if (stream != null)
+                    {
+                        using StreamReader reader = new(stream);
+                        content = reader.ReadToEnd();
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                // Si hay algún error, simplemente retornar false
+            }
+            
+            return false;
         }
 
 

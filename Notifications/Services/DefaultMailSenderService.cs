@@ -1,4 +1,4 @@
-﻿//
+//
 //  Copyright © 2024 10X de Guatemala, S.A.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ using DiezX.Api.Commons.Notifications.Dto;
 using DiezX.Api.Commons.Notifications.Utils;
 using Microsoft.Extensions.Options;
 using DiezX.Api.Commons.Resources;
-using PreMailer.Net;
+
 
 namespace DiezX.Api.Commons.Notifications.Services
 {
@@ -270,8 +270,9 @@ namespace DiezX.Api.Commons.Notifications.Services
 
         /// <summary>
         /// Enviar correos electrónicos utilizando los parámetros y la plantilla especificada.
-        /// Puedes especificar tu propio css incluyendolo dentro del proyecto en la ruta Resources/email-styles.css
-        /// Si quieres saber que atributos agregar al css consulta: https://github.com/10xGuatemala/DiezX.Api.Commons/blob/main/Notifications/Templates/email-default-styles.css
+        /// Puedes especificar tu propio CSS incluyéndolo como recurso embebido (Embedded Resource) en tu proyecto con el nombre "email-styles.css".
+        /// Si no se encuentra un CSS personalizado, se utilizará el CSS por defecto de la librería.
+        /// Para saber qué atributos agregar al CSS consulta: https://github.com/10xGuatemala/DiezX.Api.Commons/blob/main/Notifications/Templates/email-default-styles.css
         /// </summary>
         /// <param name="name">El nombre del destinatario.</param>
         /// <param name="email">El correo electrónico del destinatario.</param>
@@ -286,10 +287,9 @@ namespace DiezX.Api.Commons.Notifications.Services
                 var body = TemplateUtil.GetHtmlContent(EmbeddedResourceUtil.GetResource(templateName), parameters);
                 _logger.LogInformation("Plantilla {TemplateName} cargada exitosamente", templateName);
 
-                // Cargar el CSS desde un archivo externo o usar el recurso embebido por defecto (simplificado)
-                string cssPath = Path.Combine("Resources", "email-styles.css");
-                string cssStyles = File.Exists(cssPath)
-                    ? await File.ReadAllTextAsync(cssPath)
+                // Cargar el CSS: primero intentar desde el proyecto que consume la librería, luego usar el por defecto
+                string cssStyles = EmbeddedResourceUtil.TryGetResourceFromCallingAssembly("email-styles.css", out string? customCss) 
+                    ? customCss 
                     : EmbeddedResourceUtil.GetResource("email-default-styles.css");
 
                 // Elimina los saltos de línea para que el CSS se incruste correctamente en una sola línea del HTML
