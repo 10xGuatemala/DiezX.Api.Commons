@@ -34,15 +34,14 @@ jobs:
       - name: Build .NET project
         run: dotnet build --configuration Release
       
-      # Solución utilizando la acción oficial de SonarCloud para evitar
-      # el error: java.lang.UnsupportedOperationException: addImpact is not supported on external issues
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+      # Análisis de código con SonarQube Cloud (acción oficial actualizada)
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=10xGuatemala_DiezX.Api.Commons
-            -Dsonar.organization=10x-guatemala-public
-            -Dsonar.sources=.
+            "-Dsonar.projectKey=10xGuatemala_DiezX.Api.Commons"
+            "-Dsonar.organization=10x-guatemala-public"
+            "-Dsonar.sources=."
