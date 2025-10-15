@@ -31,7 +31,7 @@ La forma más sencilla de instalar la librería es a través del administrador d
 Este proyecto requiere las siguientes dependencias:
 
 - NodaTime, versión `3.1.11`
-- MailKit, versión `4.4.0`
+- MailKit, versión `4.6.0` (actualizado desde `4.4.0` para corregir vulnerabilidades de seguridad)
 - System.IdentityModel.Tokens.Jwt, versión `7.4.1`
 - MimeTypesMap, versión `1.0.8`
 - SonarAnalyzer.CSharp, versión `9.22.0.87781`
@@ -69,7 +69,7 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
   - **Configurations**: Configuraciones relacionadas con notificaciones.
   - **Dto**: Objetos de Transferencia de Datos para notificaciones.
   - **Services**
-    - `DefaultMailSenderService.cs`: Servicio predeterminado para enviar correos electrónicos.
+    - `DefaultMailSenderService.cs`: Servicio predeterminado para enviar correos electrónicos. Soporta CSS personalizado mediante recursos embebidos.
     - `SendMailService.cs`: Servicio para enviar correos electrónicos.
   - **Templates**
     - `EmailConfirmationTemplate.html`: Plantilla para correos de confirmación.
@@ -78,8 +78,10 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
     - `PasswordUpdatedTemplate.html`: Plantilla para correos de actualización de contraseña.
     - `RejectionTemplate.html`: Plantilla para correos donde se rechaza solicitud.
     - `MfaCodeEmailTemplate`: Plantilla para enviar por correo código de MFA
+    - `email-default-styles.css`: Estilos CSS por defecto para las plantillas de correo
   - **Utils**
     - `TemplateUtil.cs`: Utilidades para trabajar con plantillas de correo electrónico.
+  - `README-CSS-PERSONALIZADO.md`: Guía completa para personalizar los estilos CSS de los correos electrónicos
 - **Remote**
   - `RemoteUtils.cs`: Clase de utilidades para manejar aspectos de las solicitudes remotas. Implementa un metodo para obtener la IP del usuario.
   
@@ -127,6 +129,23 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
 ## Uso
 
 Este proyecto está diseñado para ser utilizado como una biblioteca de clases dentro de un proyecto más grande de ASP.NET Core. Se debe hacer referencia a este proyecto desde su solución principal para acceder a las funcionalidades comunes que proporciona.
+
+### Personalización de CSS para correos electrónicos
+
+A partir de la versión 1.8.0, puedes personalizar los estilos CSS de los correos electrónicos incluyendo tu propio archivo `email-styles.css` como recurso embebido en tu proyecto:
+
+1. Crea un archivo `email-styles.css` en tu proyecto
+2. Márcalo como **Embedded Resource** en el `.csproj`:
+
+   ```xml
+   <ItemGroup>
+     <EmbeddedResource Include="Resources\email-styles.css" />
+   </ItemGroup>
+   ```
+
+3. El servicio `DefaultMailSenderService` automáticamente detectará y usará tu CSS personalizado
+
+Para más detalles, consulta la [guía completa de personalización de CSS](Notifications/README-CSS-PERSONALIZADO.md).
 
 ## Contribuciones
 

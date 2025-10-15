@@ -5,6 +5,21 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2025-10-15
+
+### Added
+
+- Nuevo método `TryGetResourceFromCallingAssembly` en `EmbeddedResourceUtil` para cargar recursos desde el proyecto consumidor
+
+### Changed
+
+- Refactorización del método `SendEmailAsync` en `DefaultMailSenderService` para cargar CSS desde recursos embebidos
+- Eliminada dependencia de `IWebHostEnvironment` en `DefaultMailSenderService`
+
+### Security
+
+- Actualización de MailKit de `4.4.0` a `4.6.0` para corregir vulnerabilidades en BouncyCastle.Cryptography (CWE-835, CWE-203, CWE-770)
+
 ## [1.7.1] - 2025-07-22
 
 ### Fixed
@@ -92,6 +107,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
   - Servicios de notificación
   - Utilidades comunes
   
+[1.8.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.8.0
 [1.7.1]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.7.1
 [1.7.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.7.0
 [1.3.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.3.0
