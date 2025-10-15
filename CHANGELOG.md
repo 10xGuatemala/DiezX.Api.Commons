@@ -18,7 +18,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ### Security
 
-- Actualización de MailKit de `4.4.0` a `4.6.0` para corregir vulnerabilidades en BouncyCastle.Cryptography (CWE-835, CWE-203, CWE-770)
+- Actualización de MailKit de `4.4.0` a `4.14.1` para corregir vulnerabilidades de seguridad (CVE-2024-38095 y vulnerabilidades en BouncyCastle.Cryptography)
 
 ## [1.7.1] - 2025-07-22
 
