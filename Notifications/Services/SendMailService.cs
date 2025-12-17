@@ -95,9 +95,9 @@ namespace DiezX.Api.Commons.Notifications.Services
                 // Crear una instancia de SmtpClient por envío
                 using var smtp = new SmtpClient();
 
-                // Seleccionar opciones de socket según UseTls: StartTlsWhenAvailable negocia TLS cuando el servidor lo permite
+                // Seleccionar opciones de socket según UseTls: StartTls requiere TLS y falla si el servidor no lo soporta
                 var options = _notificationConfig.UseTls
-                    ? SecureSocketOptions.StartTlsWhenAvailable
+                    ? SecureSocketOptions.StartTls
                     : SecureSocketOptions.None;
 
                 _logger.LogInformation("Configurando correo para envío a {UserName}", _notificationConfig.UserName);
