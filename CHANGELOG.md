@@ -5,6 +5,12 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2025-12-15
+
+### Added
+
+- Se añadió la propiedad `UseAuthentication` a `NotificationsConfig` para soportar relays internos sin autenticación y se hicieron opcionales UserName y Password. Además, se refactorizó `SendMailService` para crear un SmtpClient por envío, negociar TLS automáticamente y autenticar sólo cuando aplique, validando credenciales cuando sean requeridas.
+
 ## [1.8.0] - 2025-10-15
 
 ### Added

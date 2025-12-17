@@ -6,7 +6,7 @@
 		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<PackageVersion>1.8.0</PackageVersion>
+		<PackageVersion>1.9.0</PackageVersion>
 		<Authors>Miguel E. Guerra Connor</Authors>
 		<Company>10X de Guatemala, S.A</Company>
 		<Owners>10X de Guatemala, S.A</Owners>
@@ -84,25 +84,18 @@
 	</ItemGroup>
 	<ItemGroup>
 	    <EmbeddedResource Include="Notifications\Templates\email-default-styles.css">
-	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.email-default-styles.css</LogicalName>
 	    </EmbeddedResource>
 		<EmbeddedResource Include="Notifications\Templates\FirstPasswordTemplate.html">
-	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.FirstPasswordTemplate.html</LogicalName>
 	    </EmbeddedResource>
 		<EmbeddedResource Include="Notifications\Templates\PasswordUpdatedTemplate.html">
-	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.PasswordUpdatedTemplate.html</LogicalName>
 	    </EmbeddedResource>
 		<EmbeddedResource Include="Notifications\Templates\ConfirmationEmailTemplate.html">
-	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.ConfirmationEmailTemplate.html</LogicalName>
 	    </EmbeddedResource>
 		<EmbeddedResource Include="Notifications\Templates\PasswordRecoveryTemplate.html">
-	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.PasswordRecoveryTemplate.html</LogicalName>
 	    </EmbeddedResource>
 		<EmbeddedResource Include="Notifications\Templates\RejectionTemplate.html">
-	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.RejectionTemplate.html</LogicalName>
 	    </EmbeddedResource>
 		<EmbeddedResource Include="Notifications\Templates\MfaCodeEmailTemplate.html">
-	        <LogicalName>DiezX.Api.Commons.Notifications.Templates.MfaCodeEmailTemplate.html</LogicalName>
 	    </EmbeddedResource>
 	</ItemGroup>
 </Project>

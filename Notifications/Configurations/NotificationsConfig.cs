@@ -40,14 +40,14 @@ namespace DiezX.Api.Commons.Notifications.Configurations
         public required int Port { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el nombre de usuario para autenticarse en el servidor SMTP.
+        /// Nombre de usuario para autenticarse en el servidor SMTP. Cuando <see cref="UseAuthentication"/> es false, puede estar vacío.
         /// </summary>
-        public required string UserName { get; set; }
+        public string? UserName { get; set; }
 
         /// <summary>
-        /// Obtiene o establece la contraseña para autenticarse en el servidor SMTP.
+        /// Contraseña para autenticarse en el servidor SMTP. Cuando <see cref="UseAuthentication"/> es false, puede estar vacía.
         /// </summary>
-        public required string Password { get; set; }
+        public string? Password { get; set; }
 
         /// <summary>
         /// Obtiene o establece la dirección de correo electrónico que aparecerá como remitente de las notificaciones por correo electrónico.
@@ -73,6 +73,11 @@ namespace DiezX.Api.Commons.Notifications.Configurations
         /// Bandera para indicar si se utiliza tls para envio de correo seguro.
         /// </summary>
         public bool UseTls { get; set; } = true;
+
+        /// <summary>
+        /// Indica si se debe utilizar autenticación SMTP. Si es false, el servicio enviará correos sin llamar a AuthenticateAsync.
+        /// </summary>
+        public bool UseAuthentication { get; set; } = true;
     }
 
 

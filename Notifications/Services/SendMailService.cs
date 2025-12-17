@@ -1,4 +1,4 @@
-﻿//
+//
 //  Copyright © 2024 10X de Guatemala, S.A.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ namespace DiezX.Api.Commons.Notifications.Services
     {
         private readonly NotificationsConfig _notificationConfig;
         private readonly ILogger<SendMailService> _logger;
-        private readonly SmtpClient _smtpClient;
+        // La instancia de SmtpClient se crea en cada envío para evitar problemas de concurrencia.
 
         //constante
         const string ERROR_ENVIO = "Se produjo un error al enviar un correo electrónico a los destinatarios especificados.";
@@ -46,7 +46,7 @@ namespace DiezX.Api.Commons.Notifications.Services
         {
             _notificationConfig = notificationConfig.Value;
             _logger = logger;
-            _smtpClient = new SmtpClient();
+            // La instancia de SmtpClient se crea en el método SendEmailAsync.
         }
 
         /// <summary>
@@ -92,16 +92,37 @@ namespace DiezX.Api.Commons.Notifications.Services
         {
             try
             {
-                // Usar TLS si está habilitado en la configuración
-                var secureSocketOptions = _notificationConfig.UseTls
-                                          ? SecureSocketOptions.StartTls
-                                          : SecureSocketOptions.None;
+                // Crear una instancia de SmtpClient por envío
+                using var smtp = new SmtpClient();
+
+                // Seleccionar opciones de socket según UseTls: StartTlsWhenAvailable negocia TLS cuando el servidor lo permite
+                var options = _notificationConfig.UseTls
+                    ? SecureSocketOptions.StartTlsWhenAvailable
+                    : SecureSocketOptions.None;
 
                 _logger.LogInformation("Configurando correo para envío a {UserName}", _notificationConfig.UserName);
-                await _smtpClient.ConnectAsync(_notificationConfig.SmtpServer, _notificationConfig.Port, secureSocketOptions);
-                await _smtpClient.AuthenticateAsync(_notificationConfig.UserName, _notificationConfig.Password);
-                await _smtpClient.SendAsync(message);
-                await _smtpClient.DisconnectAsync(true);
+
+                await smtp.ConnectAsync(_notificationConfig.SmtpServer, _notificationConfig.Port, options);
+
+                // Autenticar sólo si UseAuthentication es verdadero y el servidor soporta autenticación
+                if (_notificationConfig.UseAuthentication &&
+                    smtp.Capabilities.HasFlag(MailKit.Net.Smtp.SmtpCapabilities.Authentication))
+                {
+                    // Quitar XOAUTH2 si el servidor lo anuncia pero no se usa
+                    smtp.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    // Validar que haya credenciales definidas
+                    if (string.IsNullOrWhiteSpace(_notificationConfig.UserName) ||
+                        string.IsNullOrWhiteSpace(_notificationConfig.Password))
+                    {
+                        throw new InvalidOperationException("Para usar autenticación SMTP se deben configurar UserName y Password.");
+                    }
+
+                    await smtp.AuthenticateAsync(_notificationConfig.UserName, _notificationConfig.Password);
+                }
+
+                await smtp.SendAsync(message);
+                await smtp.DisconnectAsync(true);
                 _logger.LogInformation("Correo enviado exitosamente");
             }
             catch (Exception ex)
