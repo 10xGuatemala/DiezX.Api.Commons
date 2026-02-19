@@ -5,6 +5,19 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] - 2026-02-18
+
+### Added
+
+- `HashingUtility` para hashear y verificar contraseñas (BCrypt) y generar API keys seguros
+- `JsonValueConverters`: fábrica de EF Core ValueConverter para columnas JSON
+- `Paginacion` en Collections: DTO con PageNumber y PageSize para paginación
+- Overload `Paginate<T>(IQueryable<T>, Paginacion)` en QueryableExtensions
+
+### Dependencies
+
+- BCrypt.Net-Next 4.0.3
+
 ## [1.9.0] - 2025-12-15
 
 ### Added
@@ -113,6 +126,8 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
   - Servicios de notificación
   - Utilidades comunes
   
+[1.10.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.10.0
+[1.9.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.9.0
 [1.8.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.8.0
 [1.7.1]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.7.1
 [1.7.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.7.0

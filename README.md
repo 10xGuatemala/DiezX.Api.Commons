@@ -38,6 +38,7 @@ Este proyecto requiere las siguientes dependencias:
 - Otp.NET versión `1.4.0`
 - PreMailer.Net versión `2.6.0`
 - Microsoft.EntityFrameworkCore `7.0.18` - Requerido para los métodos de extensión asincrónicos. Compatible con proyectos que usen EF Core 8.x.
+- BCrypt.Net-Next, versión `4.0.3` - Requerido para HashingUtility (hashing de contraseñas).
 
 ## Estructura del Proyecto
 
@@ -45,9 +46,11 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
 
 - **Collections**
   - `CollectionUtil.cs`: Utilidades para trabajar con colecciones de datos.
+  - `Paginacion.cs`: DTO con PageNumber y PageSize para parámetros de paginación en consultas.
 
 - **Converters**
   - `JsonDateTimeConverter.cs`: Convertidor para manejar la serialización de fechas en JSON.
+  - `JsonValueConverters.cs`: Fábrica de EF Core ValueConverter para columnas JSON (`CreateNullableConverter<T>()`, `CreateJsonDocumentConverter()`).
 
 - **Date**
   - `DateUtil.cs`: Utilidades para operaciones comunes relacionadas con fechas.
@@ -106,6 +109,7 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
     - `HeaderUtil.cs`: Utileria para Decodificar la cabecera de autorización tipo BASIC y extraer las credenciales del usuario.
     - `RefreshTokenUtil`: Utileria para la generación de Refresh Tokens seguros.
     - `AuthUtil.cs`: Utilidad para gestión de autenticación que maneja cookies seguras para tokens JWT y refresh tokens, implementa configuraciones de seguridad (HttpOnly, Secure, SameSite) y adapta respuestas según el entorno (desarrollo/producción).
+    - `HashingUtility.cs`: Utilidad para hashear contraseñas (BCrypt), verificar hashes y generar API keys seguros.
 
 - **Strings**
   - `StringUtil.cs`: Utilidades para operaciones comunes con cadenas de texto.
@@ -119,7 +123,7 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
 
 - **Extensiones**
   - `EnumerableExtensions.cs`: Provee métodos de extensión para `IEnumerable<T>` que permiten funcionalidades tales como lanzar excepciones personalizadas si el resultado de una consulta está vacía o una condición no se cumple.
-  - `QueryableExtensions.cs`:  Añade métodos de extensión para `IQueryable<T>` que ayudan con la paginación de resultados aplicando límites de tamaño de página y número de página a las consultas.
+  - `QueryableExtensions.cs`: Métodos de extensión para `IQueryable<T>`: `Paginate(pageNumber, pageSize)` y `Paginate(Paginacion)` para paginación de resultados.
 
 - **Conventions**
   - `ApiConventions`:  Convención que incluye las posibles respuestas estándar del api para robustecer la documentación de swagger

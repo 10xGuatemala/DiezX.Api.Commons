@@ -1,5 +1,5 @@
-﻿//
-//  Copyright 2024  Copyright © 10X de Guatemala, S.A.
+//
+//  Copyright 2026  Copyright © 10X de Guatemala, S.A.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -12,6 +12,8 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+
+using DiezX.Api.Commons.Collections;
 
 namespace DiezX.Api.Commons.Extensions
 {
@@ -36,5 +38,15 @@ namespace DiezX.Api.Commons.Extensions
 
             return query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         }
+
+        /// <summary>
+        /// Aplica la paginación a una consulta usando un objeto <see cref="Paginacion"/>.
+        /// </summary>
+        /// <typeparam name="T">El tipo de los elementos de <paramref name="query"/>.</typeparam>
+        /// <param name="query">La consulta a la que se aplicará la paginación.</param>
+        /// <param name="paginacion">Parámetros de paginación (PageNumber, PageSize).</param>
+        /// <returns>Una consulta <see cref="IQueryable{T}"/> que representa la página específica de elementos.</returns>
+        public static IQueryable<T> Paginate<T>(this IQueryable<T> query, Paginacion paginacion) =>
+            Paginate(query, paginacion.PageNumber, paginacion.PageSize);
     }
 }

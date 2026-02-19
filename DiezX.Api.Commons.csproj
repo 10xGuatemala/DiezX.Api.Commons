@@ -6,7 +6,7 @@
 		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<PackageVersion>1.9.0</PackageVersion>
+		<PackageVersion>1.10.0</PackageVersion>
 		<Authors>Miguel E. Guerra Connor</Authors>
 		<Company>10X de Guatemala, S.A</Company>
 		<Owners>10X de Guatemala, S.A</Owners>
@@ -19,6 +19,7 @@
 		<PackageProjectUrl>https://github.com/10xGuatemala/DiezX.Api.Commons</PackageProjectUrl>
 		<PackageTags>DiezX Commons API AspnetCore Rest</PackageTags>
 		<PackageId>DiezX.Api.Commons</PackageId>
+		<RootNamespace>DiezX.Api.Commons</RootNamespace>
 		<PackageIcon>logo_diezx.png</PackageIcon>
 		<NeutralLanguage>es-GT</NeutralLanguage>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -38,11 +39,16 @@
 		<PackageReference Include="PreMailer.Net" Version="2.6.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.1" />
 		<PackageReference Include="MimeTypesMap" Version="1.0.8" />
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.22.0.87781">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.18" />
+	</ItemGroup>
+	<ItemGroup>
+		<CompilerVisibleProperty Include="RootNamespace" />
+		<CompilerVisibleProperty Include="ProjectDir" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Notifications\" />
