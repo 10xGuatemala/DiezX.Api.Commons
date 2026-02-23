@@ -5,6 +5,16 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2026-02-23
+
+### Added
+
+- `TryHandleCustomExceptionAsync` en `DefaultExceptionHandler` para extender el manejo de excepciones en proyectos consumidores
+
+### Changed
+
+- `CreateProblemDetailsAndLogInfoAsync` convertido a virtual; invoca primero `TryHandleCustomExceptionAsync` antes de la lógica estándar
+
 ## [1.10.0] - 2026-02-18
 
 ### Added
@@ -126,6 +136,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
   - Servicios de notificación
   - Utilidades comunes
   
+[1.11.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.11.0
 [1.10.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.10.0
 [1.9.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.9.0
 [1.8.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.8.0

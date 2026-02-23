@@ -55,18 +55,17 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
 - **Date**
   - `DateUtil.cs`: Utilidades para operaciones comunes relacionadas con fechas.
 
-- **ExceptionsHandlers**
+- **ExceptionHandlers**
   - **Dtos**
-    - `ExtendedProblemDetail.cs`: Clase para proporcionar detalles adicionales en las respuestas de errores de la API, extendiendo la estructura de respuesta estándar.
-
+    - `ExtendedProblemDetail.cs`: Clase para proporcionar detalles adicionales en las respuestas de errores (RFC 7807), extendiendo `ProblemDetails`.
   - **Exceptions**
     - `ApiGeneralException.cs`: Excepción personalizada para errores generales de la API.
-    - `ApiValidationParamsException.cs`: Excepción para manejar errores específicos de validación de parámetros de la API.
-    - `TokenExpiredException.cs`: Excepción personalizada que se lanza cuando un token de autenticación ha expirado.
-
+    - `ApiValidationParamsException.cs`: Excepción para errores de validación de parámetros.
+    - `TokenExpiredException.cs`: Excepción cuando un token de autenticación ha expirado.
+    - `DataNotFoundException.cs`: Excepción cuando no se encuentran datos solicitados.
+  - `DefaultExceptionHandler.cs`: Manejador por defecto para capturar y procesar excepciones. **Extensible** mediante herencia y el método virtual `TryHandleCustomExceptionAsync` (ver sección *Extensibilidad del Exception Handler*).
   - **Filters**
-    - `ValidateModelAttribute.cs`: Filtro de acción para validar el modelo de entrada en las solicitudes a la API antes de llegar al controlador.
-    - `DefaultExceptionHandler.cs`: Manejador por defecto para capturar y procesar excepciones no controladas a nivel de la aplicación.
+    - `ValidateModelAttribute.cs`: Filtro de acción para validar el modelo de entrada antes de llegar al controlador.
 
 - **Notifications**
   - **Configurations**: Configuraciones relacionadas con notificaciones.
@@ -131,6 +130,86 @@ El proyecto está organizado en varias carpetas y archivos que se detallan a con
 ## Uso
 
 Este proyecto está diseñado para ser utilizado como una biblioteca de clases dentro de un proyecto más grande de ASP.NET Core. Se debe hacer referencia a este proyecto desde su solución principal para acceder a las funcionalidades comunes que proporciona.
+
+## Extensibilidad del Exception Handler
+
+`DefaultExceptionHandler` permite extender el manejo de excepciones mediante herencia. El método virtual `TryHandleCustomExceptionAsync` se invoca antes de la lógica estándar; si retorna un valor, se usa ese resultado; si retorna `null`, se delega al handler por defecto (que maneja `ApiGeneralException`, `ApiValidationParamsException`, `TokenExpiredException`, `DataNotFoundException` y errores genéricos).
+
+### Firma del método extensible
+
+```csharp
+protected virtual Task<(ExtendedProblemDetail, LogLevel, string)?> TryHandleCustomExceptionAsync(Exception ex, HttpContext context)
+```
+
+- **Retorno**: `(ExtendedProblemDetail, LogLevel, string)?` — tupla con el detalle del problema, nivel de log y mensaje para el log. `null` para delegar al handler estándar.
+- **Parámetros**: `ex` es la excepción capturada; `context` permite acceder al `HttpContext` (request, user, claims, etc.).
+
+### Ejemplo: manejo de excepciones propias del dominio
+
+```csharp
+using DiezX.Api.Commons.ExceptionHandling;
+using DiezX.Api.Commons.Utils;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+public class MiExceptionHandler : DiezX.Api.Commons.Exceptions.DefaultExceptionHandler
+{
+    private readonly DateUtil _dateUtil;
+
+    public MiExceptionHandler(RequestDelegate next, DateUtil dateUtil, ILogger<MiExceptionHandler> logger, IOptions<JsonOptions> jsonOptions)
+        : base(next, dateUtil, logger, jsonOptions)
+    {
+        _dateUtil = dateUtil;
+    }
+
+    protected override Task<(ExtendedProblemDetail, LogLevel, string)?> TryHandleCustomExceptionAsync(Exception ex, HttpContext context)
+    {
+        if (ex is not MiExcepcionDominio miEx)
+            return Task.FromResult<(ExtendedProblemDetail, LogLevel, string)?>(null);
+
+        var mensaje = ObtenerMensajeSegunContexto(context, miEx);
+        var problemDetails = new ExtendedProblemDetail
+        {
+            Status = StatusCodes.Status503ServiceUnavailable,
+            Title = "ServiceUnavailable",
+            Detail = mensaje,
+            Timestamp = _dateUtil.GetTime(),
+            Instance = context.Request.Path
+        };
+        return Task.FromResult<(ExtendedProblemDetail, LogLevel, string)?>(
+            (problemDetails, LogLevel.Warning, $"Error dominio: {mensaje}"));
+    }
+
+    private static string ObtenerMensajeSegunContexto(HttpContext context, MiExcepcionDominio ex)
+    {
+        // Usar context.User para personalizar mensajes según rol/claims
+        if (context.User.IsInRole("Admin"))
+            return "Mensaje técnico para administrador.";
+        return "Mensaje genérico para el usuario.";
+    }
+}
+```
+
+### Escenario de uso
+
+**Problema**: En un portal con integración a Power BI, cuando falla la conexión o el password expira, se quiere mostrar mensajes distintos según el tipo de usuario:
+
+- **Usuario interno**: mensaje indicando que debe cambiar el password de Power BI en la configuración.
+- **Usuario externo**: mensaje genérico ("Los tableros no están disponibles en este momento") para no exponer detalles internos.
+
+**Solución**: Crear una excepción de dominio (`PowerBIServiceException`) con una propiedad `IsPasswordExpired` y un handler que extienda `DefaultExceptionHandler`. En `TryHandleCustomExceptionAsync` se detecta la excepción, se consulta `context.User.IsInRole(...)` para determinar el tipo de usuario y se devuelve el `ExtendedProblemDetail` con el mensaje correspondiente. De esta forma se evita consultar la base de datos y se usa el JWT ya disponible en el contexto.
+
+### Registro en `Program.cs`
+
+Registra tu handler personalizado como middleware (reemplazando el manejo de excepciones por defecto si aplica):
+
+```csharp
+app.UseMiddleware<MiExceptionHandler>();
+```
+
+El handler debe estar registrado en el pipeline antes de los middlewares que puedan lanzar excepciones. Las dependencias (`DateUtil`, `ILogger`, `IOptions<JsonOptions>`) se resuelven por inyección de dependencias.
 
 ## Contribuciones
 

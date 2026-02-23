@@ -1,4 +1,4 @@
-﻿//
+//
 //  Copyright © 2024 10X de Guatemala, S.A.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +12,7 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
@@ -65,20 +66,39 @@ namespace DiezX.Api.Commons.Exceptions
             }
             catch (Exception ex)
             {
-                var (problemDetails, logLevel, logMessage) = CreateProblemDetailsAndLogInfo(context, ex);
+                var (problemDetails, logLevel, logMessage) = await CreateProblemDetailsAndLogInfoAsync(context, ex);
                 await ConfigureResponse(context, problemDetails);
                 _logger.Log(logLevel, ex, logMessage);
             }
         }
 
         /// <summary>
+        /// Intenta manejar la excepción con lógica personalizada.
+        /// Las subclases pueden override para manejar excepciones propias del proyecto.
+        /// </summary>
+        /// <param name="ex">Excepción capturada.</param>
+        /// <param name="context">Contexto HTTP actual.</param>
+        /// <returns>Tupla con ProblemDetails, LogLevel y mensaje de log si se manejó; null para delegar al handler estándar.</returns>
+        protected virtual Task<(ExtendedProblemDetail, LogLevel, string)?> TryHandleCustomExceptionAsync(Exception ex, HttpContext context)
+        {
+            return Task.FromResult<(ExtendedProblemDetail, LogLevel, string)?>(null);
+        }
+
+        /// <summary>
         /// Crea un objeto <see cref="ProblemDetails"/> basado en la excepción capturada.
+        /// Primero intenta <see cref="TryHandleCustomExceptionAsync"/>; si retorna null, aplica la lógica estándar.
         /// </summary>
         /// <param name="context">Contexto HTTP actual.</param>
         /// <param name="ex">Excepción capturada para procesar.</param>
         /// <returns>Un objeto <see cref="ProblemDetails"/> que representa los detalles del problema.</returns>
-        private (ExtendedProblemDetail, LogLevel, string) CreateProblemDetailsAndLogInfo(HttpContext context, Exception ex)
+        protected virtual async Task<(ExtendedProblemDetail, LogLevel, string)> CreateProblemDetailsAndLogInfoAsync(HttpContext context, Exception ex)
         {
+            var customResult = await TryHandleCustomExceptionAsync(ex, context);
+            if (customResult.HasValue)
+            {
+                return customResult.Value;
+            }
+
             var problemDetails = new ExtendedProblemDetail
             {
                 Status = StatusCodes.Status500InternalServerError,
