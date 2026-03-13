@@ -31,7 +31,7 @@ La forma más sencilla de instalar la librería es a través del administrador d
 Este proyecto requiere las siguientes dependencias:
 
 - NodaTime, versión `3.1.11`
-- MailKit, versión `4.14.1` (actualizado desde `4.4.0` para corregir vulnerabilidades de seguridad)
+- MailKit, versión `4.15.1` (actualizado para corregir CVE-2026-30227 - CRLF Injection en MimeKit)
 - System.IdentityModel.Tokens.Jwt, versión `7.4.1`
 - MimeTypesMap, versión `1.0.8`
 - SonarAnalyzer.CSharp, versión `9.22.0.87781`

@@ -1,4 +1,4 @@
-﻿//
+//
 //  Copyright © 2024 10X de Guatemala, S.A.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +12,8 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+using DiezX.Api.Commons.Validators;
+
 namespace DiezX.Api.Commons.Notifications.Dto
 {
     /// <summary>
@@ -27,6 +29,7 @@ namespace DiezX.Api.Commons.Notifications.Dto
         /// <summary>
         /// Correo electrónico del destinatario.
         /// </summary>
+        [AdvancedEmail]
         public required string Email { get; set; }
 
         /// <summary>

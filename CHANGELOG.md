@@ -5,6 +5,20 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.1] - 2026-03-13
+
+### Fixed
+
+- Se corrige vulnerabilidad CVE-2026-30227 (CRLF Injection) en MimeKit. Actualización de MailKit de 4.14.1 a 4.15.1.
+
+### Security
+
+- [SNYK-DOTNET-MIMEKIT-15468175](https://security.snyk.io/vuln/SNYK-DOTNET-MIMEKIT-15468175): InternetAddress no rechazaba caracteres de control, permitiendo inyección de comandos SMTP vía MAIL FROM/RCPT TO.
+
+### Changed
+
+- `EmailDto.Email` ahora incluye validación `[AdvancedEmailAttribute]` para rechazar formatos inválidos y caracteres de control.
+
 ## [1.11.0] - 2026-02-23
 
 ### Added
@@ -136,6 +150,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
   - Servicios de notificación
   - Utilidades comunes
   
+[1.11.1]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.11.1
 [1.11.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.11.0
 [1.10.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.10.0
 [1.9.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.9.0
