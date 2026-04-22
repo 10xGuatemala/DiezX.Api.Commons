@@ -35,16 +35,23 @@ namespace DiezX.Api.Commons.Security
                 throw new FormatException("Formato de cabecera de autorización inválido.");
             }
 
-            var encodedCredentials = authorization[6..]; // Omitir el texto "Basic "
+            var encodedCredentials = authorization[6..].Trim(); // Omitir el texto "Basic "
             var credentialBytes = Convert.FromBase64String(encodedCredentials);
-            var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':');
+            var decoded = Encoding.UTF8.GetString(credentialBytes);
 
-            if (credentials.Length != 2)
+            // RFC 7617: el usuario no puede contener ":", pero la contraseña sí.
+            // Se separa por el PRIMER ":" únicamente para soportar contraseñas con dicho carácter.
+            var separatorIndex = decoded.IndexOf(':');
+            if (separatorIndex <= 0)
             {
                 throw new FormatException("Formato de credenciales inválido.");
             }
 
-            return new() { Username = credentials[0], Password = credentials[1] };
+            return new()
+            {
+                Username = decoded[..separatorIndex],
+                Password = decoded[(separatorIndex + 1)..]
+            };
         }
     }
 

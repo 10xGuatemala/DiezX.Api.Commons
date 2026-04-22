@@ -7,6 +7,10 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ## [1.11.2] - 2026-04-22
 
+### Fixed
+
+- `HeaderUtil.DecodeBasicAuthorization`: contraseñas que contenían el carácter `:` (dos puntos) eran rechazadas con `FormatException: Formato de credenciales inválido`. Ahora el separador usuario/contraseña es el **primer** `:` únicamente, conforme a [RFC 7617](https://datatracker.ietf.org/doc/html/rfc7617) (el usuario no puede contener `:`, la contraseña sí). Se agregó `Trim()` al payload Base64 para tolerar espacios/saltos accidentales.
+
 ### Security
 
 - MailKit 4.15.1 → **4.16.0** para remediar vulnerabilidad alta de neutralización impropia de elementos especiales en salida (CWE-74 Injection) reportada por Snyk/Dependabot.
