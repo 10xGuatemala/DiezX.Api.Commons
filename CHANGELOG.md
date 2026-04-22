@@ -5,6 +5,12 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.2] - 2026-04-22
+
+### Security
+
+- MailKit 4.15.1 → **4.16.0** para remediar vulnerabilidad alta de neutralización impropia de elementos especiales en salida (CWE-74 Injection) reportada por Snyk/Dependabot.
+
 ## [1.11.1] - 2026-03-13
 
 ### Fixed
