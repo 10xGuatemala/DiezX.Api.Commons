@@ -160,6 +160,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
   - Servicios de notificación
   - Utilidades comunes
   
+[1.11.2]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.11.2
 [1.11.1]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.11.1
 [1.11.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.11.0
 [1.10.0]: https://github.com/10xGuatemala/DiezX.Api.Commons/releases/tag/v1.10.0
